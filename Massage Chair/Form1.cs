@@ -18,6 +18,7 @@ namespace Massage_Chair
         //protected SerialPort GPort { get => gPort; set => gPort = value; }
         protected SerialPort GPort { get; set; }
         public bool GPortStart { get; set; }
+        public bool bGitTest;
 
         protected struct LegControlStruct
         {
