@@ -20,6 +20,7 @@ namespace Massage_Chair
         public bool GPortStart { get; set; }
         public bool bGitTest;
 
+
         protected struct LegControlStruct
         {
             //private bool gLegStart;
