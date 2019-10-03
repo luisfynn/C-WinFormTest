@@ -19,6 +19,7 @@ namespace Massage_Chair
         private bool gStartTimer;
         protected SerialPort GPort { get; set; }
         public bool GPortStart { get; set; }
+
         private List<Byte> gSerialRecv;
         byte[] gSendData;
         private bool gSendBusy;
