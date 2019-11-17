@@ -217,7 +217,6 @@ namespace Massage_Chair
             gSendData[2] = Convert.ToByte("52".ToString(), 16);
             gSendData[3] = Convert.ToByte("03".ToString(), 16);
             gSendData[4] = Convert.ToByte("1d".ToString(), 16);
-
             gSendData[5] = Convert.ToByte(gSerialRecv[5].ToString(), 16);
             gSendData[6] = Convert.ToByte(gSerialRecv[6].ToString(), 16);
             gSendData[7] = Convert.ToByte(gSerialRecv[7].ToString(), 16);
@@ -276,6 +275,7 @@ namespace Massage_Chair
                     gPort.Close();
                     gPort.Dispose();
                     gPort = null;
+
                 }
             }
         }

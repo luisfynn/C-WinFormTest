@@ -126,6 +126,7 @@
             this.lbBaudRate.Location = new System.Drawing.Point(39, 59);
             this.lbBaudRate.Name = "lbBaudRate";
             this.lbBaudRate.Size = new System.Drawing.Size(70, 15);
+
             this.lbBaudRate.TabIndex = 3;
             this.lbBaudRate.Text = "Baud rate";
             // 
