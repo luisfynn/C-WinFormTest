@@ -1,15 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO.Ports;
-using System.Collections;
-
 using System.IO.Ports;
 
 namespace Massage_Chair
@@ -36,12 +28,17 @@ namespace Massage_Chair
             {
                 if (_Strings == null)
                     _Strings = new StringBuilder(1024);
+                
                 // 로그 길이가 1024자가 되면 이전 로그 삭제
                 if (_Strings.Length >= (1024 - value.Length))
                     _Strings.Clear();
+               
                 // 로그 추가 및 화면 표시
-                _Strings.AppendLine(value);
-                txtRec.Text = _Strings.ToString();
+                _Strings.AppendLine(value + Environment.NewLine);
+
+                txtRec.Text += Convert.ToByte(_Strings.ToString(), 16).ToString();
+               // txtRec.Text += _Strings.ToString();
+                _Strings.Clear();
             }
         }
 
@@ -70,8 +67,6 @@ namespace Massage_Chair
 
             ComboBr.Text = "115200";
             ComboDb.Text = "8";
-            //ComboParity.Text = "0";
-            //ComboParity.SelectedItem = "none";
 
             foreach (string s in Enum.GetNames(typeof(Parity)))
             {
@@ -100,8 +95,9 @@ namespace Massage_Chair
                             gPort.Parity = (Parity)ComboParity.SelectedIndex;
                             gPort.StopBits = (StopBits)ComboSb.SelectedIndex;
 
-                            gPort.ReadTimeout = (int)500;
-                            gPort.WriteTimeout = (int)1000;
+                            gPort.ReadTimeout = (int)2000;
+                            gPort.WriteTimeout = (int)2000;
+
                             gPort.Open();
                         }
 
@@ -172,6 +168,17 @@ namespace Massage_Chair
             }
         }
 
+        public string str2hex(string strData)
+        {
+            string resultHex = string.Empty;
+            byte[] arr_byteStr = Encoding.Default.GetBytes(strData);
+ 
+            foreach (byte byteStr in arr_byteStr)
+                resultHex += string.Format("{0:X2}", byteStr);
+ 
+            return resultHex;
+        }
+
         private void MorRecvDataTimer_Tick(object sender, EventArgs e)
         {
             // 분석할 데이터가 5개 이하면 return
@@ -180,14 +187,15 @@ namespace Massage_Chair
             // STX 확인
             if (gSerialRecv[0] != 0x24)
             {
-                Strings = String.Format("[ERR] STX fail.");
+                //Strings = String.Format("[ERR] STX fail.");
                 gSerialRecv.Clear();
                 return;
             }
 
             // 길이 확인
             Int32 len = gSerialRecv[4];
-            if (len + 6 != gSerialRecv.Count)
+
+            if (len + 6 > gSerialRecv.Count)
             {
                 return;
             }
@@ -195,28 +203,55 @@ namespace Massage_Chair
             // CheckSum 확인
             Int32 checkSum = 0;
             StringBuilder msg = new StringBuilder();
+
             for (int i = 0; i < len - 1; i++)
             {
                 msg.Append((Char)gSerialRecv[i]);
                 checkSum += gSerialRecv[i];
             }
+
             if ((Byte)(checkSum & 0xFF) != gSerialRecv[len + 5])
             {
-                Strings = String.Format("[ERR] CheckSum fail.");
+                //Strings = String.Format("[ERR] CheckSum fail.");
                 gSerialRecv.Clear();
                 return;
             }
 
             // 데이터 출력
-            Strings = String.Format("[RECV] {0}", msg.ToString());
+#if false
+            //Strings = String.Format("[RECV] {0}", msg.ToString());
+            //txtRec.Text += msg.ToString() + Environment.NewLine;
+            //Int32 numVal = Int32.Parse(msg.ToString());
+            txtRec.Text += str2hex(msg.ToString());
+            //Int16.Parse(checkSum.ToString());
+            Int16 numVal = Int16.Parse(checkSum.ToString());
+            txtRec.Text += numVal.ToString("X");
+            //txtRec.Text += str2hex(Int16.Parse(checkSum.ToString()).ToString());
+            txtRec.Text += Environment.NewLine;
+            //txtRec.Text += numVal.ToString();
+#endif
+            if (rBtnChar.Checked)
+            {
+                txtRec.Text += msg.ToString();
+                txtRec.Text += Environment.NewLine;
+            }
+            else
+            {
+                txtRec.Text += str2hex(msg.ToString());
+                Int16 numVal = Int16.Parse(checkSum.ToString());
+                txtRec.Text += numVal.ToString("X");
+                txtRec.Text += Environment.NewLine;
+            }
 
             // ACK 전송
             gSendBusy = true;
+            /*
             gSendData[0] = Convert.ToByte("24".ToString(), 16);
             gSendData[1] = Convert.ToByte("41".ToString(), 16);
             gSendData[2] = Convert.ToByte("52".ToString(), 16);
             gSendData[3] = Convert.ToByte("03".ToString(), 16);
             gSendData[4] = Convert.ToByte("1d".ToString(), 16);
+
             gSendData[5] = Convert.ToByte(gSerialRecv[5].ToString(), 16);
             gSendData[6] = Convert.ToByte(gSerialRecv[6].ToString(), 16);
             gSendData[7] = Convert.ToByte(gSerialRecv[7].ToString(), 16);
@@ -245,6 +280,7 @@ namespace Massage_Chair
             {
                 MessageBox.Show(ex.Message);
             }
+            */
             gSendBusy = false;
             // 분석한 데이터 삭제
             gSerialRecv.RemoveRange(0, len + 4);
@@ -256,14 +292,6 @@ namespace Massage_Chair
             {
                 gSerialRecv.Add((Byte)gPort.ReadByte());
             }
-
-            /*
-            // Receive 버퍼 뒤에 수신 받은 데이터 채우기
-            String msg = Port.ReadExisting();           // Byte 변환에 문제 있음
-            if (!String.IsNullOrEmpty(msg))
-                // Port.Encoding은 Port 생성시에 설정된 Encoding(UTF-8. line38 참조)
-                RecvDataList.AddRange(Port.Encoding.GetBytes(msg));
-            */
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -275,7 +303,6 @@ namespace Massage_Chair
                     gPort.Close();
                     gPort.Dispose();
                     gPort = null;
-
                 }
             }
         }
@@ -342,12 +369,14 @@ namespace Massage_Chair
                     gStartTimer = true;
                     button1.Text = "send".ToString();
                     gSendTimer.Start();
+                    gRecvTimer.Start();
                 }
                 else
                 {
                     gStartTimer = false;
                     button1.Text = "stop".ToString();
                     gSendTimer.Stop();
+                    gRecvTimer.Stop();
                 }
             }
             else
@@ -433,7 +462,7 @@ namespace Massage_Chair
                 }
                 else
                 {
-                    MessageBox.Show("공사중입니다.");
+                    //MessageBox.Show("공사중입니다.");
                 }
             }
             catch (System.Exception ex)
@@ -446,5 +475,6 @@ namespace Massage_Chair
         {
             MorRecvDataTimer_Tick(sender, e);
         }
+
     }
 }
