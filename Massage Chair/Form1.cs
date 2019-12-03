@@ -9,38 +9,16 @@ namespace Massage_Chair
     public partial class Form1 : Form
     {
         private SerialPort gPort;
+        private bool gPortStart;
         private bool gStartTimer;
-        public SerialPort GPort { get; set; }
+        protected SerialPort GPort { get; set; }
+
         public bool GPortStart { get; set; }
+        public bool GStartTimer { get; set; }
 
         private List<Byte> gSerialRecv;
         byte[] gSendData;
         private bool gSendBusy;
-
-        /* 로그 제어 */
-        private StringBuilder _Strings;
-        /// <summary>
-        /// 로그 객체
-        /// </summary>
-        private String Strings
-        {
-            set
-            {
-                if (_Strings == null)
-                    _Strings = new StringBuilder(1024);
-                
-                // 로그 길이가 1024자가 되면 이전 로그 삭제
-                if (_Strings.Length >= (1024 - value.Length))
-                    _Strings.Clear();
-               
-                // 로그 추가 및 화면 표시
-                _Strings.AppendLine(value + Environment.NewLine);
-
-                txtRec.Text += Convert.ToByte(_Strings.ToString(), 16).ToString();
-               // txtRec.Text += _Strings.ToString();
-                _Strings.Clear();
-            }
-        }
 
         /// <summary>
         /// 생성자(constructor)
@@ -51,15 +29,13 @@ namespace Massage_Chair
         }
 
         /// <summary>
-        /// WinForm Load
+        /// 사용자가 프로그램 실행시 호출되는 함수 
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
-            CheckForIllegalCrossThreadCalls = false;
-
             btnOpen.Text = "connect".ToString();
             GPortStart = false;
-            gStartTimer = false;
+            GStartTimer = false;
 
             gSerialRecv = new List<Byte>();
             gSendData = new byte[35];
@@ -192,7 +168,7 @@ namespace Massage_Chair
                 return;
             }
 
-            // 길이 확인
+            // 수신 데이터 길이 확인
             Int32 len = gSerialRecv[4];
 
             if (len + 6 > gSerialRecv.Count)
@@ -217,7 +193,7 @@ namespace Massage_Chair
                 return;
             }
 
-            // 데이터 출력
+            // 텍스트박스에 데이터 출력
 #if false
             //Strings = String.Format("[RECV] {0}", msg.ToString());
             //txtRec.Text += msg.ToString() + Environment.NewLine;
@@ -282,7 +258,7 @@ namespace Massage_Chair
             }
             */
             gSendBusy = false;
-            // 분석한 데이터 삭제
+            // 분석한 데이터를 리스트에서 삭제
             gSerialRecv.RemoveRange(0, len + 4);
         }
 
@@ -321,6 +297,7 @@ namespace Massage_Chair
             }
         }
 
+        //수신 텍스트박스에 기록된 내용 삭제
         private void btnClear_Click(object sender, EventArgs e)
         {
             txtRec.Clear();
@@ -364,16 +341,16 @@ namespace Massage_Chair
             if(gPort != null && gPort.IsOpen)
             //if (gPort.IsOpen)
             {
-                if (gStartTimer == false)
+                if (GStartTimer == false)
                 {
-                    gStartTimer = true;
+                    GStartTimer = true;
                     button1.Text = "send".ToString();
                     gSendTimer.Start();
                     gRecvTimer.Start();
                 }
                 else
                 {
-                    gStartTimer = false;
+                    GStartTimer = false;
                     button1.Text = "stop".ToString();
                     gSendTimer.Stop();
                     gRecvTimer.Stop();
@@ -400,59 +377,57 @@ namespace Massage_Chair
 
             int iSendCount = 35;
 
-            gSendData[0] = Convert.ToByte("24".ToString(), 16);
-            gSendData[1] = Convert.ToByte("41".ToString(), 16);
-            gSendData[2] = Convert.ToByte("52".ToString(), 16);
-            gSendData[3] = Convert.ToByte("02".ToString(), 16);
-            gSendData[4] = Convert.ToByte("1d".ToString(), 16);
-
-            gSendData[5] = Convert.ToByte(textBox1.Text.ToString(), 16);
-            gSendData[6] = Convert.ToByte(textBox2.Text.ToString(), 16);
-            gSendData[7] = Convert.ToByte(textBox3.Text.ToString(), 16);
-            gSendData[8] = Convert.ToByte(textBox4.Text.ToString(), 16);
-            gSendData[9] = Convert.ToByte(textBox5.Text.ToString(), 16);
-
-            gSendData[10] = Convert.ToByte(textBox6.Text.ToString(), 16);
-            gSendData[11] = Convert.ToByte(textBox7.Text.ToString(), 16);
-            gSendData[12] = Convert.ToByte(textBox8.Text.ToString(), 16);
-            gSendData[13] = Convert.ToByte(textBox9.Text.ToString(), 16);
-            gSendData[14] = Convert.ToByte(textBox10.Text.ToString(), 16);
-
-            gSendData[15] = Convert.ToByte(textBox11.Text.ToString(), 16);
-            gSendData[16] = Convert.ToByte(textBox12.Text.ToString(), 16);
-            gSendData[17] = Convert.ToByte(textBox13.Text.ToString(), 16);
-            gSendData[18] = Convert.ToByte(textBox14.Text.ToString(), 16);
-            gSendData[19] = Convert.ToByte(textBox15.Text.ToString(), 16);
-
-            gSendData[20] = Convert.ToByte(textBox16.Text.ToString(), 16);
-            gSendData[21] = Convert.ToByte(textBox17.Text.ToString(), 16);
-            gSendData[22] = Convert.ToByte(textBox18.Text.ToString(), 16);
-            gSendData[23] = Convert.ToByte(textBox19.Text.ToString(), 16);
-            gSendData[24] = Convert.ToByte(textBox20.Text.ToString(), 16);
-
-            gSendData[25] = Convert.ToByte(textBox21.Text.ToString(), 16);
-            gSendData[26] = Convert.ToByte(textBox22.Text.ToString(), 16);
-            gSendData[27] = Convert.ToByte(textBox23.Text.ToString(), 16);
-            gSendData[28] = Convert.ToByte(textBox24.Text.ToString(), 16);
-            gSendData[29] = Convert.ToByte(textBox25.Text.ToString(), 16);
-
-            gSendData[30] = Convert.ToByte(textBox26.Text.ToString(), 16);
-            gSendData[31] = Convert.ToByte(textBox27.Text.ToString(), 16);
-            gSendData[32] = Convert.ToByte(textBox28.Text.ToString(), 16);
-            gSendData[33] = Convert.ToByte(textBox29.Text.ToString(), 16);
-            gSendData[34] = 0;
-
-            byte count = 0;
-
             try
             {
                 if (true == rBtnHexa.Checked)
                 {
                     byte checksum = 0;
+                    byte count = 0;
 
                     foreach (var s in gSendData)
                     {
-                        //checksum += gSendData[s];
+                        gSendData[0] = Convert.ToByte("24".ToString(), 16);
+                        gSendData[1] = Convert.ToByte("41".ToString(), 16);
+                        gSendData[2] = Convert.ToByte("52".ToString(), 16);
+                        gSendData[3] = Convert.ToByte("02".ToString(), 16);
+                        gSendData[4] = Convert.ToByte("1d".ToString(), 16);
+
+                        gSendData[5] = Convert.ToByte(textBox1.Text.ToString(), 16);
+                        gSendData[6] = Convert.ToByte(textBox2.Text.ToString(), 16);
+                        gSendData[7] = Convert.ToByte(textBox3.Text.ToString(), 16);
+                        gSendData[8] = Convert.ToByte(textBox4.Text.ToString(), 16);
+                        gSendData[9] = Convert.ToByte(textBox5.Text.ToString(), 16);
+
+                        gSendData[10] = Convert.ToByte(textBox6.Text.ToString(), 16);
+                        gSendData[11] = Convert.ToByte(textBox7.Text.ToString(), 16);
+                        gSendData[12] = Convert.ToByte(textBox8.Text.ToString(), 16);
+                        gSendData[13] = Convert.ToByte(textBox9.Text.ToString(), 16);
+                        gSendData[14] = Convert.ToByte(textBox10.Text.ToString(), 16);
+
+                        gSendData[15] = Convert.ToByte(textBox11.Text.ToString(), 16);
+                        gSendData[16] = Convert.ToByte(textBox12.Text.ToString(), 16);
+                        gSendData[17] = Convert.ToByte(textBox13.Text.ToString(), 16);
+                        gSendData[18] = Convert.ToByte(textBox14.Text.ToString(), 16);
+                        gSendData[19] = Convert.ToByte(textBox15.Text.ToString(), 16);
+
+                        gSendData[20] = Convert.ToByte(textBox16.Text.ToString(), 16);
+                        gSendData[21] = Convert.ToByte(textBox17.Text.ToString(), 16);
+                        gSendData[22] = Convert.ToByte(textBox18.Text.ToString(), 16);
+                        gSendData[23] = Convert.ToByte(textBox19.Text.ToString(), 16);
+                        gSendData[24] = Convert.ToByte(textBox20.Text.ToString(), 16);
+
+                        gSendData[25] = Convert.ToByte(textBox21.Text.ToString(), 16);
+                        gSendData[26] = Convert.ToByte(textBox22.Text.ToString(), 16);
+                        gSendData[27] = Convert.ToByte(textBox23.Text.ToString(), 16);
+                        gSendData[28] = Convert.ToByte(textBox24.Text.ToString(), 16);
+                        gSendData[29] = Convert.ToByte(textBox25.Text.ToString(), 16);
+
+                        gSendData[30] = Convert.ToByte(textBox26.Text.ToString(), 16);
+                        gSendData[31] = Convert.ToByte(textBox27.Text.ToString(), 16);
+                        gSendData[32] = Convert.ToByte(textBox28.Text.ToString(), 16);
+                        gSendData[33] = Convert.ToByte(textBox29.Text.ToString(), 16);
+                        gSendData[34] = 0;
+
                         checksum += s;
                         count++;
                     }
@@ -462,7 +437,7 @@ namespace Massage_Chair
                 }
                 else
                 {
-                    //MessageBox.Show("공사중입니다.");
+                    gPort.Write(gSendData, 0, iSendCount);
                 }
             }
             catch (System.Exception ex)
