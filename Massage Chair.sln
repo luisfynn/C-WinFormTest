@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Massage Chair", "Massage Chair\Massage Chair.csproj", "{69FC385A-75E3-414F-8BBA-2E9390BF24BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassageMapTest", "MassageMapTest\MassageMapTest.csproj", "{5DD9C039-B516-4545-AE38-1CF282EE1749}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +17,15 @@ Global
 		{69FC385A-75E3-414F-8BBA-2E9390BF24BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69FC385A-75E3-414F-8BBA-2E9390BF24BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69FC385A-75E3-414F-8BBA-2E9390BF24BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DD9C039-B516-4545-AE38-1CF282EE1749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DD9C039-B516-4545-AE38-1CF282EE1749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DD9C039-B516-4545-AE38-1CF282EE1749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DD9C039-B516-4545-AE38-1CF282EE1749}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {17231FBF-CC49-460A-BFF1-F9C8F3104A9E}
 	EndGlobalSection
 EndGlobal
