@@ -1,16 +1,16 @@
-﻿namespace MassageMapTest
+﻿namespace Massage_Chair
 {
-    partial class Form1
+    partial class Form2
     {
         /// <summary>
-        /// 필수 디자이너 변수입니다.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// 사용 중인 모든 리소스를 정리합니다.
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">관리되는 리소스를 삭제해야 하면 true이고, 그렇지 않으면 false입니다.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -39,12 +39,13 @@
             this.comboBox9 = new System.Windows.Forms.ComboBox();
             this.comboBox10 = new System.Windows.Forms.ComboBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btAdd = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btRemove = new System.Windows.Forms.Button();
+            this.btSave = new System.Windows.Forms.Button();
+            this.btLoad = new System.Windows.Forms.Button();
+            this.btClear = new System.Windows.Forms.Button();
+            this.btSend = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // comboBox4
@@ -73,7 +74,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 19);
             this.comboBox1.TabIndex = 0;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // comboBox2
             // 
@@ -149,15 +149,15 @@
             this.richTextBox1.TabIndex = 10;
             this.richTextBox1.Text = "";
             // 
-            // button1
+            // btAdd
             // 
-            this.button1.Location = new System.Drawing.Point(26, 32);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 23);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "ADD";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btAdd.Location = new System.Drawing.Point(26, 32);
+            this.btAdd.Name = "btAdd";
+            this.btAdd.Size = new System.Drawing.Size(121, 23);
+            this.btAdd.TabIndex = 11;
+            this.btAdd.Text = "Add";
+            this.btAdd.UseVisualStyleBackColor = true;
+            this.btAdd.Click += new System.EventHandler(this.btAdd_Click);
             // 
             // label1
             // 
@@ -168,61 +168,73 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Type";
             // 
-            // button2
+            // btRemove
             // 
-            this.button2.Location = new System.Drawing.Point(155, 32);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(121, 23);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "REMOVE";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btRemove.Location = new System.Drawing.Point(155, 32);
+            this.btRemove.Name = "btRemove";
+            this.btRemove.Size = new System.Drawing.Size(121, 23);
+            this.btRemove.TabIndex = 13;
+            this.btRemove.Text = "Remove";
+            this.btRemove.UseVisualStyleBackColor = true;
+            this.btRemove.Click += new System.EventHandler(this.btRemove_Click);
             // 
-            // button3
+            // btSave
             // 
-            this.button3.Location = new System.Drawing.Point(281, 32);
-            this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(121, 23);
-            this.button3.TabIndex = 14;
-            this.button3.Text = "Save";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.FIleSave_Click);
+            this.btSave.Location = new System.Drawing.Point(281, 32);
+            this.btSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btSave.Name = "btSave";
+            this.btSave.Size = new System.Drawing.Size(121, 23);
+            this.btSave.TabIndex = 14;
+            this.btSave.Text = "Save";
+            this.btSave.UseVisualStyleBackColor = true;
+            this.btSave.Click += new System.EventHandler(this.btSave_Click);
             // 
-            // button4
+            // btLoad
             // 
-            this.button4.Location = new System.Drawing.Point(407, 32);
-            this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(121, 23);
-            this.button4.TabIndex = 15;
-            this.button4.Text = "Load";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.FileLoad_Click);
+            this.btLoad.Location = new System.Drawing.Point(407, 32);
+            this.btLoad.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btLoad.Name = "btLoad";
+            this.btLoad.Size = new System.Drawing.Size(121, 23);
+            this.btLoad.TabIndex = 15;
+            this.btLoad.Text = "Load";
+            this.btLoad.UseVisualStyleBackColor = true;
+            this.btLoad.Click += new System.EventHandler(this.btLoad_Click);
             // 
-            // button5
+            // btClear
             // 
-            this.button5.Location = new System.Drawing.Point(534, 32);
-            this.button5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(121, 23);
-            this.button5.TabIndex = 16;
-            this.button5.Text = "Clear";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.btClear.Location = new System.Drawing.Point(534, 32);
+            this.btClear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btClear.Name = "btClear";
+            this.btClear.Size = new System.Drawing.Size(121, 23);
+            this.btClear.TabIndex = 16;
+            this.btClear.Text = "Clear";
+            this.btClear.UseVisualStyleBackColor = true;
+            this.btClear.Click += new System.EventHandler(this.btClear_Click);
             // 
-            // Form1
+            // btSend
+            // 
+            this.btSend.Location = new System.Drawing.Point(661, 32);
+            this.btSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btSend.Name = "btSend";
+            this.btSend.Size = new System.Drawing.Size(121, 23);
+            this.btSend.TabIndex = 17;
+            this.btSend.Text = "Send";
+            this.btSend.UseVisualStyleBackColor = true;
+            this.btSend.Click += new System.EventHandler(this.btSend_Click);
+            // 
+            // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1383, 846);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btSend);
+            this.Controls.Add(this.btClear);
+            this.Controls.Add(this.btLoad);
+            this.Controls.Add(this.btSave);
+            this.Controls.Add(this.btRemove);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btAdd);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.comboBox7);
             this.Controls.Add(this.comboBox8);
@@ -234,7 +246,7 @@
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.comboBox1);
-            this.Name = "Form1";
+            this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MassageMap test program V0.1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -256,12 +268,12 @@
         private System.Windows.Forms.ComboBox comboBox9;
         private System.Windows.Forms.ComboBox comboBox10;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btAdd;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btRemove;
+        private System.Windows.Forms.Button btSave;
+        private System.Windows.Forms.Button btLoad;
+        private System.Windows.Forms.Button btClear;
+        private System.Windows.Forms.Button btSend;
     }
 }
-

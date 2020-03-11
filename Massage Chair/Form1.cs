@@ -8,9 +8,9 @@ namespace Massage_Chair
 {
     public partial class Form1 : Form
     {
-        private SerialPort gPort;
-        private bool gPortStart;
-        private bool gStartTimer;
+        protected SerialPort gPort;
+       // private bool gPortStart;
+        //private bool gStartTimer;
         protected SerialPort GPort { get; set; }
 
         public bool GPortStart { get; set; }
@@ -89,9 +89,12 @@ namespace Massage_Chair
 
                             gRecvTimer.Start();
                             MessageBox.Show("시리얼 포트를 연결했습니다.");
+
+                            MassageMap.Enabled = true;
                         }
                         else
                         {
+                            MassageMap.Enabled = false;
                         }
                         break;
                     case true:
@@ -336,7 +339,7 @@ namespace Massage_Chair
         }
 
         //timer start
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if(gPort != null && gPort.IsOpen)
             //if (gPort.IsOpen)
@@ -373,7 +376,7 @@ namespace Massage_Chair
             }
             if (gSendBusy == true) return;
 
-            byte[] byteSendData = new byte[35];
+            //byte[] byteSendData = new byte[35];
 
             int iSendCount = 35;
 
@@ -451,5 +454,11 @@ namespace Massage_Chair
             MorRecvDataTimer_Tick(sender, e);
         }
 
+        private void MassageMap_Click(object sender, EventArgs e)
+        {
+            Form2 massageMapBox = new Form2();
+            massageMapBox.Passvalue = gPort;
+            massageMapBox.ShowDialog();
+        }
     }
 }

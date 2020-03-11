@@ -108,6 +108,7 @@
             this.textBox28 = new System.Windows.Forms.TextBox();
             this.textBox29 = new System.Windows.Forms.TextBox();
             this.gRecvTimer = new System.Windows.Forms.Timer(this.components);
+            this.MassageMap = new System.Windows.Forms.Button();
             this.gBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -303,7 +304,7 @@
             this.button1.TabIndex = 26;
             this.button1.Text = "Stop";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // gSendTimer
             // 
@@ -808,11 +809,23 @@
             this.gRecvTimer.Interval = 50;
             this.gRecvTimer.Tick += new System.EventHandler(this.gRecvTimer_Tick);
             // 
+            // MassageMap
+            // 
+            this.MassageMap.Enabled = false;
+            this.MassageMap.Location = new System.Drawing.Point(608, 11);
+            this.MassageMap.Name = "MassageMap";
+            this.MassageMap.Size = new System.Drawing.Size(120, 28);
+            this.MassageMap.TabIndex = 113;
+            this.MassageMap.Text = "MassageMap";
+            this.MassageMap.UseVisualStyleBackColor = true;
+            this.MassageMap.Click += new System.EventHandler(this.MassageMap_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(951, 573);
+            this.Controls.Add(this.MassageMap);
             this.Controls.Add(this.textBox29);
             this.Controls.Add(this.textBox28);
             this.Controls.Add(this.textBox27);
@@ -981,6 +994,7 @@
         private System.Windows.Forms.TextBox textBox28;
         private System.Windows.Forms.TextBox textBox29;
         private System.Windows.Forms.Timer gRecvTimer;
+        private System.Windows.Forms.Button MassageMap;
     }
 }
 

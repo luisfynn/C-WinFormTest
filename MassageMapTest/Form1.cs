@@ -15,6 +15,7 @@ namespace MassageMapTest
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct MassageMap
     {
+        static public byte count = 11;
         public string massageType;
         public string walkHoldTime;
         public string walkSpeed;
@@ -221,11 +222,11 @@ namespace MassageMapTest
 
                 massageLoadList = new List<MassageMap>();
 
-                int rowMax = messagedeLimit.Count() / 11;       //크기 구하는 법 찾아보기
+                int rowMax = messagedeLimit.Count() / MassageMap.count;
 
                 for (int i = 0; i < rowMax; i++)
                 {
-                    int colIndex = i * 11;
+                    int colIndex = i * MassageMap.count;
                     massageLoadList.Add(new MassageMap(messagedeLimit[colIndex + 0], messagedeLimit[colIndex + 1], messagedeLimit[colIndex + 2], messagedeLimit[colIndex + 3], 
                                                         messagedeLimit[colIndex + 4],messagedeLimit[colIndex + 5], messagedeLimit[colIndex + 6], messagedeLimit[colIndex + 7], 
                                                         messagedeLimit[colIndex + 8], messagedeLimit[colIndex + 9], messagedeLimit[colIndex + 10]));
@@ -247,7 +248,6 @@ namespace MassageMapTest
                     richTextBox1.Text += massageLoadList[i].xdAdj;
                     richTextBox1.Text += massageLoadList[i].interwork;
                     richTextBox1.Text += Environment.NewLine;
-                    richTextBox1.Text += Environment.NewLine;
                 }
             }
             catch
@@ -260,6 +260,20 @@ namespace MassageMapTest
         {
             //Text file로 저장
             WriteTextFile(richTextBox1.Text);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //최종 확인
+            var result = MessageBox.Show("기록된 마사지맵을 초기화하시겠습니까?", "CAPTION", MessageBoxButtons.OKCancel);
+
+            //사용자가 ok누를 경우 기록삭제
+            if (result == DialogResult.OK)
+            {
+                richTextBox1.Clear();
+                massageList.Clear();
+                //MessageBox.Show($"{massageList.Count()}");
+            }
         }
     }
 }
