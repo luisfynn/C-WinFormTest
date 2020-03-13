@@ -18,6 +18,9 @@ namespace Massage_Chair
         private SerialPort Form2Port;
         private bool isPortOpen = false;
 
+        private int listMaxCount = 0;
+        private int listCurrentCount = 0;
+
         public SerialPort Passvalue
         {
             get { return Form2Port; }
@@ -54,6 +57,16 @@ namespace Massage_Chair
                 interwork = _inwork;
             }
         }
+
+        //option
+        private enum optMassageType{KNEAD, KNEAD_R, TAP, MIX, PRESS, SOFT_TAP, SWING, SWING_TAP, SWING_SOFT_TAP, KNEAD_SOFT_TAP};
+        private enum optMassageLoc {PARK, TOP, HEAD_BACK, NECK, NECK_MID, SHOULDER, SW_1_10, SW_2_10, SW_3_10, SW_4_10, SW_5_10, SW_6_10, SW_7_10, SW_8_10, SW_9_10,
+            WAIST, HIP_H, HIP_L };
+        private enum optMassagePower {POWER_0, POWER_1, POWER_2, POWER_3, POWER_4, POWER_5};
+        private enum optMassageWidth {DONTCARE, CLOCK_RUN, UNCLOCK_RUN, STOP_AT_MIN, STOP_AT_MID, STOP_AT_MAX, UNSTOP_AT_MIN, UNSTOP_AT_MID, UNSTOP_AT_MAX,
+            SWING_MIN, SWING_MID, SWING_MAX, QS_MIN_CW, QS_MID_CW, QS_MAX_CW, QS_MIN_CCW, QS_MID_CCW, QS_MAX_CCW, ENC_R1A, ENC_R1B, ENC_R1C, ENC_R1D, ENC_R2A, ENC_R2B,
+            ENC_R2C, ENC_R2D, 
+        };
 
         public List<MassageMap> massageList;
         public List<MassageMap> massageLoadList;
@@ -261,11 +274,13 @@ namespace Massage_Chair
             {
                 if (Passvalue.IsOpen)
                 {
-                    byte[] byteSendData = new byte[35];
-
-                    int iSendCount = 8;
-
+                    byte[] byteSendData = new byte[19] { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+                    UInt16 iData = 0;
+                    int iSendCount = 0;
+                    #region 전원커맨드 전송 테스트
                     //The REX power on command
+                    iSendCount = 8;
+
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
@@ -274,8 +289,79 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("BC".ToString(), 16);
+                    #endregion
+
+                    /*
+                     * 	
+                	    unsigned char ucMassageType;
+	                    unsigned short usHoldTime;
+	                    unsigned char ucUpDownSpeed;	
+	                    unsigned char ucMassaeWidth;  
+	                    unsigned char ucTapKneadDuty;   
+	                    unsigned short usXdHoldTime;
+	                    unsigned char ucXdSpeed;
+	                    unsigned char ucXdRepeatMode;
+	                    unsigned short usXdAdjValue;	
+	                    unsigned char ucInterwork;
+                     * 
+                     */
+
+                    listMaxCount = massageList.Count;
+                    iSendCount = byteSendData.Length;
+
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("c0".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("13".ToString(), 16);
+
+                    switch (massageList[listCurrentCount].massageType)
+                    {
+                        case "KNEAD":
+                            byteSendData[5] = Convert.ToByte("0", 16);
+                            break;
+                        default:
+                            byteSendData[5] = Convert.ToByte("1", 16);
+                            break;
+                    }        
+
+                    iData = Convert.ToUInt16(massageList[listCurrentCount].walkHoldTime, 16);
+                    byteSendData[6] = (byte)((iData >> 8) & 0xff);
+                    byteSendData[7] = (byte)(iData & 0xff);
+
+                    byteSendData[8] = Convert.ToByte(massageList[listCurrentCount].walkSpeed, 16);
+                    byteSendData[9] = Convert.ToByte(massageList[listCurrentCount].width, 16);
+
+                    byteSendData[10] = Convert.ToByte(massageList[listCurrentCount].kDuty, 16);
+                    iData = Convert.ToUInt16(massageList[listCurrentCount].tDuty, 16);
+                    byteSendData[11] |= (byte)(iData << 4);
+
+                    iData = Convert.ToUInt16(massageList[listCurrentCount].xdHoldTime, 16);
+                    byteSendData[12] = (byte)((iData >> 8) & 0xff);
+                    byteSendData[13] = (byte)(iData & 0xff);
+
+                    byteSendData[14] = Convert.ToByte(massageList[listCurrentCount].xdDuty, 16);
+                    byteSendData[15] = Convert.ToByte(massageList[listCurrentCount].xdRepeat, 16);
+                    byteSendData[16] = Convert.ToByte("255", 16);
+                    byteSendData[17] = Convert.ToByte(massageList[listCurrentCount].interwork, 16);
+
+                    byte sum = 0;
+
+                    foreach(var s in byteSendData)
+                    {
+                        sum += s;
+                    }
+
+                    sum = (byte)(sum & 0xff);
+                    byteSendData[17] = sum;
 
                     Passvalue.Write(byteSendData, 0, iSendCount);
+
+                    listCurrentCount++;
+                    if (listCurrentCount >= listMaxCount)
+                    {
+                        listCurrentCount = 0;
+                    }
                 }
                 else
                 {
@@ -290,6 +376,11 @@ namespace Massage_Chair
             {
                 //reserve
             }
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
