@@ -21,28 +21,65 @@ namespace Massage_Chair
         private int listMaxCount = 0;
         private int listCurrentCount = 0;
 
-        public SerialPort Passvalue
+        public SerialPort sPort
         {
             get { return Form2Port; }
             set { Form2Port = value; }  
         }
 
+        enum optOperate
+        {
+            ADD,
+            REMOVE,
+        };
+
+        private delegate void drawRichTextBox();
+        drawRichTextBox updateRichTextBox;
+
+        #region massae option
+        public enum optMassageType { KNEAD, KNEAD_R, TAP, MIX, PRESS, SOFT_TAP, SWING, SWING_TAP, SWING_SOFT_TAP, KNEAD_SOFT_TAP };
+        public enum optMassageWalkLoc
+        {
+            PARK, TOP, HEAD_BACK, NECK, NECK_MID, SHOULDER, SW_1_10, SW_2_10, SW_3_10, SW_4_10, SW_5_10, SW_6_10, SW_7_10, SW_8_10, SW_9_10,
+            WAIST, HIP_H, HIP_L
+        };
+        public enum optMassagePower { POWER_0, POWER_1, POWER_2, POWER_3, POWER_4, POWER_5 };
+        public enum optMassageWidth
+        {
+            DONTCARE, CLOCK_RUN, UNCLOCK_RUN, STOP_AT_MIN, STOP_AT_MID, STOP_AT_MAX, UNSTOP_AT_MIN, UNSTOP_AT_MID, UNSTOP_AT_MAX,
+            SWING_MIN, SWING_MID, SWING_MAX, QS_MIN_CW, QS_MID_CW, QS_MAX_CW, QS_MIN_CCW, QS_MID_CCW, QS_MAX_CCW, ENC_R1A, ENC_R1B, ENC_R1C, ENC_R1D, ENC_R2A, ENC_R2B,
+            ENC_R2C, ENC_R2D,
+        };
+        public enum optMassageXdLoc { STEP0, STEP1, STEP2, STEP3, STEP4, STEP5 }
+        public enum optMassageXdRepeat
+        {
+            SEC_NONE, SEC_0_1, SEC_0_2, SEC_0_3, SEC_0_4, SEC_0_5, SEC_1_0, SEC_1_2, SEC_1_3, SEC_1_4, SEC_1_5, SEC_2_0, SEC_2_1, SEC_2_3, SEC_2_4, SEC_2_5,
+            SEC_3_0, SEC_3_1, SEC_3_2, SEC_3_4, SEC_3_5, SEC_4_0, SEC_4_1, SEC_4_2, SEC_4_3, SEC_4_5, SEC_5_0, SEC_5_1, SEC_5_2, SEC_5_3, SEC_5_4,
+        }
+        public enum optMassageInterwork
+        {
+            NONE, SHOULDER, HIP_RELEASE, SEAT_BACK, SEAT_NOT_SHOULDER, AUTOCARE,
+        }
+        #endregion
+
+
         public struct MassageMap
         {
-            static public byte count = 11;
-            public string massageType;
-            public string walkHoldTime;
-            public string walkSpeed;
-            public string width;
-            public string tDuty;  //tap
-            public string kDuty;  //knead
-            public string xdHoldTime;
-            public string xdDuty;
-            public string xdRepeat;
-            public string xdAdj;
-            public string interwork;
+            static public byte count = 10;
+            public optMassageType massageType;
+            public optMassageWalkLoc walkHoldTime;
+            public optMassagePower walkSpeed;
+            public optMassageWidth width;
+            public optMassagePower tDuty;  //tap
+            public optMassagePower kDuty;  //knead
+            public optMassageXdLoc xdHoldTime;
+            public optMassagePower xdDuty;
+            public optMassageXdRepeat xdRepeat;
+            public optMassageInterwork interwork;
 
-            public MassageMap(string _type, string _whold, string _wduty, string _width, string _tduty, string _kduty, string _xhold, string _xdDuty, string _repeat, string _adj, string _inwork)
+            public MassageMap
+            (optMassageType _type, optMassageWalkLoc _whold, optMassagePower _wduty, optMassageWidth _width, optMassagePower _tduty,
+                optMassagePower _kduty, optMassageXdLoc _xhold, optMassagePower _xdDuty, optMassageXdRepeat _repeat, optMassageInterwork _inwork)
             {
                 massageType = _type;
                 walkHoldTime = _whold;
@@ -53,20 +90,9 @@ namespace Massage_Chair
                 xdHoldTime = _xhold;
                 xdDuty = _xdDuty;
                 xdRepeat = _repeat;
-                xdAdj = _adj;
                 interwork = _inwork;
             }
         }
-
-        //option
-        private enum optMassageType{KNEAD, KNEAD_R, TAP, MIX, PRESS, SOFT_TAP, SWING, SWING_TAP, SWING_SOFT_TAP, KNEAD_SOFT_TAP};
-        private enum optMassageLoc {PARK, TOP, HEAD_BACK, NECK, NECK_MID, SHOULDER, SW_1_10, SW_2_10, SW_3_10, SW_4_10, SW_5_10, SW_6_10, SW_7_10, SW_8_10, SW_9_10,
-            WAIST, HIP_H, HIP_L };
-        private enum optMassagePower {POWER_0, POWER_1, POWER_2, POWER_3, POWER_4, POWER_5};
-        private enum optMassageWidth {DONTCARE, CLOCK_RUN, UNCLOCK_RUN, STOP_AT_MIN, STOP_AT_MID, STOP_AT_MAX, UNSTOP_AT_MIN, UNSTOP_AT_MID, UNSTOP_AT_MAX,
-            SWING_MIN, SWING_MID, SWING_MAX, QS_MIN_CW, QS_MID_CW, QS_MAX_CW, QS_MIN_CCW, QS_MID_CCW, QS_MAX_CCW, ENC_R1A, ENC_R1B, ENC_R1C, ENC_R1D, ENC_R2A, ENC_R2B,
-            ENC_R2C, ENC_R2D, 
-        };
 
         public List<MassageMap> massageList;
         public List<MassageMap> massageLoadList;
@@ -74,58 +100,35 @@ namespace Massage_Chair
         public Form2()
         {
             InitializeComponent();
+        }
 
+        private void Form2_Load(object sender, EventArgs e)
+        {
             massageList = new List<MassageMap>();
 
-            string[] comboMassageType = { "KNEAD", "KNEAD_R", "TAP", "MIX", "PRESS"
-                                    ,"SOFT_TAP", "SWING", "SWING_TAP", "SWING_SOFT_TAP", "KNEAD_SOFT_TAP"  };
-            comboBox1.Items.AddRange(comboMassageType);
-
-            string[] comboWalkLocation = { "PARK", "TOP", "HEAD_BACK", "NECK_POSITION", "NECK_MIDDLE"
-                                    ,"SHOULDER", "SHOULDER_WAIST_1_10", "SHOULDER_WAIST_2_10", "SHOULDER_WAIST_3_10", "SHOULDER_WAIST_4_10"
-                                    ,"SHOULDER_WAIST_5_10", "SHOULDER_WAIST_6_10", "SHOULDER_WAIST_7_10", "SHOULDER_WAIST_8_10", "HOULDER_WAIST_9_10"
-                                    ,"LOCATE_WAIST", "LOCATE_HIP_HIGH", "LOCATE_HIP_LOW", "TIME_10S | TIME_MASK_FLAG"};
-
-            comboBox2.Items.AddRange(comboWalkLocation);
-
-            string[] comboWalkDuty = { "MOTOR_POWER_0", "MOTOR_POWER_1", "MOTOR_POWER_2", "MOTOR_POWER_3", "MOTOR_POWER_4", "MOTOR_POWER_5" };
-            comboBox3.Items.AddRange(comboWalkDuty);
-
-
-            string[] comboWidth = { "IDLE", "CLOCK_RUN", "UNCLOCK_RUN", "STOP_AT_MIN", "STOP_AT_MID", "STOP_AT_MAX",
-                                    "UNSTOP_AT_MIN", "UNSTOP_AT_MID", "UNSTOP_AT_MAX", "SWING_MIN", "SWING_MID", "SWING_MAX",
-                                    "QS_MIN_CW", "QS_MIN_CCW"};
-            comboBox4.Items.AddRange(comboWidth);
-
-            comboBox5.Items.AddRange(comboWalkDuty);
-            comboBox6.Items.AddRange(comboWalkDuty);
-
-            string[] comboXdHold = { "XD_STEP_0", "XD_STEP_1", "XD_STEP_2", "XD_STEP_3", "XD_STEP_4", "XD_STEP_5", "TIME_10S | TIME_MASK_FLAG" };
-            comboBox7.Items.AddRange(comboXdHold);
-            comboBox8.Items.AddRange(comboWalkDuty);
-
-            string[] comboXdRepeat = { "SECTION_0_1", "SECTION_0_2", "SECTION_0_3", "SECTION_0_4", "SECTION_0_5"
-                                      ,"SECTION_1_0", "SECTION_1_2", "SECTION_1_3", "SECTION_1_4", "SECTION_1_5"
-                                      ,"SECTION_2_0", "SECTION_2_1", "SECTION_2_3", "SECTION_2_4", "SECTION_2_5"
-                                      ,"SECTION_3_0", "SECTION_3_1", "SECTION_3_2", "SECTION_3_4", "SECTION_3_5"
-                                      ,"SECTION_4_0", "SECTION_4_1", "SECTION_4_2", "SECTION_4_3", "SECTION_4_5"
-                                      ,"SECTION_5_0", "SECTION_5_1", "SECTION_5_2", "SECTION_5_3", "SECTION_5_4"};
-
-            comboBox9.Items.AddRange(comboXdRepeat);
-
-            string[] comboInterWork = { "INTERWORK_AIR_HIP", "INTERWORK_AIR_SHOULDER", "INTERWORK_AIR_HIP_RELEASE", "INTERWORK_AIR_SEAT_BACK", "INTERWORK_AIR_SEAT_NOT_SHOULDER"
-                                      ,"INTERWORK_LEG_DOWN", "INTERWORK_BRAIN_ALL_ARM", "INTERWORK_BRAIN_RIGHT_ARM", "INTERWORK_BRAIN_LEFT_ARM", "INTERWORK_BRAIN_SHOULDER_FOOT_HEEL"
-                                      ,"INTERWORK_BRAIN_FOOT_HEEL_LEG_SHOULDER", "INTERWORK_BRAIN_WAIST_SHOULDER_6S", "INTERWORK_BRAIN_WAIST_SHOULDER_5S", "INTERWORK_BRAIN_ALL_DISABLE"};
-
-            comboBox10.Items.AddRange(comboInterWork);
+            #region SetComboBox
+            cbType.DataSource = Enum.GetValues(typeof(optMassageType));
+            cbWalkLoc.DataSource = Enum.GetValues(typeof(optMassageWalkLoc));
+            cbWalkSpd.DataSource = Enum.GetValues(typeof(optMassagePower));
+            cbWidth.DataSource = Enum.GetValues(typeof(optMassageWidth));
+            cbTapSpd.DataSource = Enum.GetValues(typeof(optMassagePower));
+            cbKneadSpd.DataSource = Enum.GetValues(typeof(optMassagePower));
+            cbXdLoc.DataSource = Enum.GetValues(typeof(optMassageXdLoc));
+            cbXdSpd.DataSource = Enum.GetValues(typeof(optMassagePower));
+            cbXdRepeat.DataSource = Enum.GetValues(typeof(optMassageXdRepeat));
+            cbInterWork.DataSource = Enum.GetValues(typeof(optMassageInterwork));
+            #endregion 
         }
-   
+
         private void btAdd_Click(object sender, EventArgs e)
         {
-            massageList.Add(new MassageMap(comboBox1.Text.ToString(), comboBox2.Text.ToString(), comboBox3.Text.ToString(), comboBox4.Text.ToString(), comboBox5.Text.ToString(),
-                comboBox6.Text.ToString(), comboBox7.Text.ToString(), comboBox8.Text.ToString(), comboBox9.Text.ToString(), "XD_AD_STEP_MAX", comboBox10.Text.ToString()));
+            massageList.Add(new MassageMap((optMassageType)cbType.SelectedItem, (optMassageWalkLoc)cbWalkLoc.SelectedItem, (optMassagePower)cbWalkSpd.SelectedItem, 
+                (optMassageWidth)cbWidth.SelectedItem,(optMassagePower)cbTapSpd.SelectedItem, (optMassagePower)cbKneadSpd.SelectedItem, 
+                (optMassageXdLoc)cbXdLoc.SelectedItem, (optMassagePower)cbXdSpd.SelectedItem, (optMassageXdRepeat)cbXdRepeat.SelectedItem,
+                (optMassageInterwork)cbInterWork.SelectedItem));
 
-            drawRichTextContents();
+            updateRichTextBox = drawAddRichTextContents;
+            updateRichTextBox();
         }
 
         private void btRemove_Click(object sender, EventArgs e)
@@ -134,10 +137,10 @@ namespace Massage_Chair
             {
                 return;
             }
-
             massageList.RemoveAt(massageList.Count - 1);
 
-            drawRichTextContents();
+            updateRichTextBox = drawRemoveRichTextContents;
+            updateRichTextBox();
         }
 
         private void btSave_Click(object sender, EventArgs e)
@@ -173,6 +176,8 @@ namespace Massage_Chair
 
                 massageLoadList = new List<MassageMap>();
 
+#region underconstruction..
+#if false
                 int rowMax = messagedeLimit.Count() / MassageMap.count;
 
                 for (int i = 0; i < rowMax; i++)
@@ -200,6 +205,8 @@ namespace Massage_Chair
                     richTextBox1.Text += massageLoadList[i].interwork;
                     richTextBox1.Text += Environment.NewLine;
                 }
+#endif
+#endregion
             }
             catch
             {
@@ -221,28 +228,36 @@ namespace Massage_Chair
             }
         }
 
-        private void drawRichTextContents()
+        private void drawAddRichTextContents()
         {
-            richTextBox1.Clear();
+            int listNum = massageList.Count;
 
-            for (int listnum = 0; listnum < massageList.Count; listnum++)
-            {
-                richTextBox1.Text += "{";
-                richTextBox1.Text += massageList[listnum].massageType + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].walkHoldTime + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].walkSpeed + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].width + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].tDuty + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].kDuty + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].xdHoldTime + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].xdDuty + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].xdRepeat + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].xdAdj + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += massageList[listnum].interwork + String.Empty.PadRight(4, ' ') + ",";
-                richTextBox1.Text += "}";
+            if (listNum < 1) return;
+            listNum = listNum - 1;
 
-                richTextBox1.Text += Environment.NewLine;
-            }
+            richTextBox1.Text += "{";
+            richTextBox1.Text += massageList[listNum].massageType + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].walkHoldTime + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].walkSpeed + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].width + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].tDuty + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].kDuty + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].xdHoldTime + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].xdDuty + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].xdRepeat + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].interwork + String.Empty.PadRight(4, ' ');
+            richTextBox1.Text += "},";
+
+            richTextBox1.Text += Environment.NewLine;
+        }
+
+        private void drawRemoveRichTextContents()
+        {
+            int startCnt = richTextBox1.Text.LastIndexOf("{");
+            int stopCnt = richTextBox1.Text.LastIndexOf("}") + 1;       //richtextbox의 newline도 삭제하기 위함
+            int lineLength = stopCnt - startCnt + 1;
+
+            richTextBox1.Text = richTextBox1.Text.Remove(startCnt, lineLength);
         }
 
         private void WriteTextFile(string text)
@@ -268,16 +283,23 @@ namespace Massage_Chair
             fileStream.Close();
         }
 
+        private byte ConvertUint16ToHex(UInt16 value)
+        {
+            UInt16 rxValue = value;
+            string strHex = Convert.ToString(rxValue);
+            return Convert.ToByte(strHex, 16);
+        }
+
         private void btSend_Click(object sender, EventArgs e)
         {
             try
             {
-                if (Passvalue.IsOpen)
+                if (sPort.IsOpen)
                 {
-                    byte[] byteSendData = new byte[19] { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-                    UInt16 iData = 0;
+                    byte[] byteSendData = new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 0;
-                    #region 전원커맨드 전송 테스트
+                    int iDataCount = 0;
+#region 전원커맨드 전송 테스트
                     //The REX power on command
                     iSendCount = 8;
 
@@ -289,61 +311,29 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("BC".ToString(), 16);
-                    #endregion
-
-                    /*
-                     * 	
-                	    unsigned char ucMassageType;
-	                    unsigned short usHoldTime;
-	                    unsigned char ucUpDownSpeed;	
-	                    unsigned char ucMassaeWidth;  
-	                    unsigned char ucTapKneadDuty;   
-	                    unsigned short usXdHoldTime;
-	                    unsigned char ucXdSpeed;
-	                    unsigned char ucXdRepeatMode;
-	                    unsigned short usXdAdjValue;	
-	                    unsigned char ucInterwork;
-                     * 
-                     */
+#endregion
 
                     listMaxCount = massageList.Count;
+                    iDataCount = byteSendData.Length - 6;
                     iSendCount = byteSendData.Length;
 
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
                     byteSendData[3] = Convert.ToByte("c0".ToString(), 16);
-                    byteSendData[4] = Convert.ToByte("13".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte(iDataCount.ToString(), 10);
 
-                    switch (massageList[listCurrentCount].massageType)
-                    {
-                        case "KNEAD":
-                            byteSendData[5] = Convert.ToByte("0", 16);
-                            break;
-                        default:
-                            byteSendData[5] = Convert.ToByte("1", 16);
-                            break;
-                    }        
+                    byteSendData[5] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].massageType);
+                    byteSendData[6] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].walkHoldTime);
+                    byteSendData[7] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].walkSpeed);
+                    byteSendData[8] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].width);
+                    byteSendData[9] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].tDuty);
 
-                    iData = Convert.ToUInt16(massageList[listCurrentCount].walkHoldTime, 16);
-                    byteSendData[6] = (byte)((iData >> 8) & 0xff);
-                    byteSendData[7] = (byte)(iData & 0xff);
-
-                    byteSendData[8] = Convert.ToByte(massageList[listCurrentCount].walkSpeed, 16);
-                    byteSendData[9] = Convert.ToByte(massageList[listCurrentCount].width, 16);
-
-                    byteSendData[10] = Convert.ToByte(massageList[listCurrentCount].kDuty, 16);
-                    iData = Convert.ToUInt16(massageList[listCurrentCount].tDuty, 16);
-                    byteSendData[11] |= (byte)(iData << 4);
-
-                    iData = Convert.ToUInt16(massageList[listCurrentCount].xdHoldTime, 16);
-                    byteSendData[12] = (byte)((iData >> 8) & 0xff);
-                    byteSendData[13] = (byte)(iData & 0xff);
-
-                    byteSendData[14] = Convert.ToByte(massageList[listCurrentCount].xdDuty, 16);
-                    byteSendData[15] = Convert.ToByte(massageList[listCurrentCount].xdRepeat, 16);
-                    byteSendData[16] = Convert.ToByte("255", 16);
-                    byteSendData[17] = Convert.ToByte(massageList[listCurrentCount].interwork, 16);
+                    byteSendData[10] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].kDuty);
+                    byteSendData[11] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].xdHoldTime);
+                    byteSendData[12] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].xdDuty);
+                    byteSendData[13] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].xdRepeat);
+                    byteSendData[14] = ConvertUint16ToHex((UInt16)massageList[listCurrentCount].interwork);
 
                     byte sum = 0;
 
@@ -353,9 +343,9 @@ namespace Massage_Chair
                     }
 
                     sum = (byte)(sum & 0xff);
-                    byteSendData[17] = sum;
+                    byteSendData[15] = sum;
 
-                    Passvalue.Write(byteSendData, 0, iSendCount);
+                    sPort.Write(byteSendData, 0, iSendCount);
 
                     listCurrentCount++;
                     if (listCurrentCount >= listMaxCount)
@@ -376,11 +366,6 @@ namespace Massage_Chair
             {
                 //reserve
             }
-        }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

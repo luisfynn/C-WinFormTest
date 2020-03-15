@@ -457,7 +457,7 @@ namespace Massage_Chair
         private void MassageMap_Click(object sender, EventArgs e)
         {
             Form2 massageMapBox = new Form2();
-            massageMapBox.Passvalue = gPort;
+            massageMapBox.sPort = gPort;
             massageMapBox.ShowDialog();
         }
     }
