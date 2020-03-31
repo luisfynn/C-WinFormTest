@@ -109,6 +109,7 @@
             this.textBox29 = new System.Windows.Forms.TextBox();
             this.gRecvTimer = new System.Windows.Forms.Timer(this.components);
             this.MassageMap = new System.Windows.Forms.Button();
+            this.btUartTest = new System.Windows.Forms.Button();
             this.gBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -820,12 +821,24 @@
             this.MassageMap.UseVisualStyleBackColor = true;
             this.MassageMap.Click += new System.EventHandler(this.MassageMap_Click);
             // 
+            // btUartTest
+            // 
+            this.btUartTest.Enabled = false;
+            this.btUartTest.Location = new System.Drawing.Point(608, 45);
+            this.btUartTest.Name = "btUartTest";
+            this.btUartTest.Size = new System.Drawing.Size(120, 28);
+            this.btUartTest.TabIndex = 114;
+            this.btUartTest.Text = "Uart test";
+            this.btUartTest.UseVisualStyleBackColor = true;
+            this.btUartTest.Click += new System.EventHandler(this.btUartTest_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(951, 573);
+            this.Controls.Add(this.btUartTest);
             this.Controls.Add(this.MassageMap);
             this.Controls.Add(this.textBox29);
             this.Controls.Add(this.textBox28);
@@ -906,7 +919,7 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "REX-F1 Remocon test program";
+            this.Text = "Serial program";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.gBox.ResumeLayout(false);
@@ -997,6 +1010,7 @@
         private System.Windows.Forms.TextBox textBox29;
         private System.Windows.Forms.Timer gRecvTimer;
         private System.Windows.Forms.Button MassageMap;
+        private System.Windows.Forms.Button btUartTest;
     }
 }
 

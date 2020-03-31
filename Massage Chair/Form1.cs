@@ -456,9 +456,30 @@ namespace Massage_Chair
 
         private void MassageMap_Click(object sender, EventArgs e)
         {
-            Form2 massageMapBox = new Form2();
-            massageMapBox.sPort = gPort;
-            massageMapBox.ShowDialog();
+            if (gPort.IsOpen == true)
+            {
+                Form2 massageMapBox = new Form2();
+                massageMapBox.Form2Port1 = gPort;
+                massageMapBox.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("serial port가 연결되지 않았습니다");
+            }
+        }
+
+        private void btUartTest_Click(object sender, EventArgs e)
+        {
+            if (gPort.IsOpen == true)
+            {
+                Form3 uartTestBox = new Form3();
+                uartTestBox.Form3Port1 = gPort;
+                uartTestBox.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("serial port가 연결되지 않았습니다");
+            }
         }
     }
 }

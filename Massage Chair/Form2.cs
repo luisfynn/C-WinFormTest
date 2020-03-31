@@ -16,16 +16,12 @@ namespace Massage_Chair
     public partial class Form2 : Form
     {
         private SerialPort Form2Port;
-        private bool isPortOpen = false;
+        public SerialPort Form2Port1 { get => Form2Port; set => Form2Port = value; }
+
+        public bool bIsPowerOpen;
 
         private int listMaxCount = 0;
         private int listCurrentCount = 0;
-
-        public SerialPort sPort
-        {
-            get { return Form2Port; }
-            set { Form2Port = value; }  
-        }
 
         enum optOperate
         {
@@ -118,6 +114,8 @@ namespace Massage_Chair
             cbXdRepeat.DataSource = Enum.GetValues(typeof(optMassageXdRepeat));
             cbInterWork.DataSource = Enum.GetValues(typeof(optMassageInterwork));
             #endregion 
+
+            bIsPowerOpen = false;
         }
 
         private void btAdd_Click(object sender, EventArgs e)
@@ -294,7 +292,7 @@ namespace Massage_Chair
         {
             try
             {
-                if (sPort.IsOpen)
+                if (Form2Port1.IsOpen)
                 {
                     byte[] byteSendData = new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 0;
@@ -345,7 +343,7 @@ namespace Massage_Chair
                     sum = (byte)(sum & 0xff);
                     byteSendData[15] = sum;
 
-                    sPort.Write(byteSendData, 0, iSendCount);
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
 
                     listCurrentCount++;
                     if (listCurrentCount >= listMaxCount)
@@ -357,6 +355,284 @@ namespace Massage_Chair
                 {
                     MessageBox.Show("시리얼포트가 열리지 않았습니다");
                 }    
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
+
+        private void btPower_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 8;
+
+                    switch (bIsPowerOpen)
+                    {
+                        case false:
+                            bIsPowerOpen = true;
+                            btPower.Text = "전원 켜짐";
+
+                            #region 전원 켬
+                            //The REX power on command
+                            byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                            byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                            byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                            byteSendData[3] = Convert.ToByte("01".ToString(), 16);
+                            byteSendData[4] = Convert.ToByte("02".ToString(), 16);
+                            byteSendData[5] = Convert.ToByte("01".ToString(), 16);
+                            byteSendData[6] = Convert.ToByte("01".ToString(), 16);
+                            byteSendData[7] = Convert.ToByte("BC".ToString(), 16);
+                            #endregion
+                            break;
+                        default:
+                            bIsPowerOpen = false;
+                            btPower.Text = "전원 꺼짐";
+
+                            #region 전원 끔
+                            //The REX power off command
+                            byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                            byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                            byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                            byteSendData[3] = Convert.ToByte("01".ToString(), 16);
+                            byteSendData[4] = Convert.ToByte("02".ToString(), 16);
+                            byteSendData[5] = Convert.ToByte("01".ToString(), 16);
+                            byteSendData[6] = Convert.ToByte("00".ToString(), 16);
+                            byteSendData[7] = Convert.ToByte("BB".ToString(), 16);
+                            #endregion
+                            break;
+                    }
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
+
+        private void btBodyScan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 8;
+
+                    #region 체형인식 완료 커맨드
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("C2".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("02".ToString(), 16);
+                    byteSendData[5] = Convert.ToByte("01".ToString(), 16);
+                    byteSendData[6] = Convert.ToByte("00".ToString(), 16);
+                    byteSendData[7] = Convert.ToByte("7C".ToString(), 16);
+                    #endregion
+
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
+
+        private void btWalkUp_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 8;
+
+                    #region 모듈 위로 올림
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("01".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("02".ToString(), 16);
+                    byteSendData[5] = Convert.ToByte("22".ToString(), 16);
+                    byteSendData[6] = Convert.ToByte("01".ToString(), 16);
+                    byteSendData[7] = Convert.ToByte("DD".ToString(), 16);
+                    #endregion
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
+
+        private void btWalkDown_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 8;
+
+                    #region 모듈 아래로 내림
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("01".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("02".ToString(), 16);
+                    byteSendData[5] = Convert.ToByte("22".ToString(), 16);
+                    byteSendData[6] = Convert.ToByte("02".ToString(), 16);
+                    byteSendData[7] = Convert.ToByte("DE".ToString(), 16);
+                    #endregion
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
+
+        private void btWalkHold_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 8;
+
+                    #region 모듈 멈춤
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("01".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("02".ToString(), 16);
+                    byteSendData[5] = Convert.ToByte("22".ToString(), 16);
+                    byteSendData[6] = Convert.ToByte("FF".ToString(), 16);
+                    byteSendData[7] = Convert.ToByte("DB".ToString(), 16);
+                    #endregion
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
+
+        private void btKneadRun_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 8;
+
+                    #region 주무름 동작
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("C3".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("02".ToString(), 16);
+                    byteSendData[5] = Convert.ToByte("01".ToString(), 16);
+                    byteSendData[6] = Convert.ToByte("00".ToString(), 16);
+                    byteSendData[7] = Convert.ToByte("7D".ToString(), 16);
+                    #endregion
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
+
+        private void btKneadStop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 8;
+
+                    #region 주무름 동작
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("C3".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("02".ToString(), 16);
+                    byteSendData[5] = Convert.ToByte("00".ToString(), 16);
+                    byteSendData[6] = Convert.ToByte("00".ToString(), 16);
+                    byteSendData[7] = Convert.ToByte("7C".ToString(), 16);
+                    #endregion
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
             }
             catch
             {
