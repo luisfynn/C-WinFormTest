@@ -643,5 +643,119 @@ namespace Massage_Chair
                 //reserve
             }
         }
+
+        private void btMainAir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 10;
+                    byte byteCheckSum = 0;
+                    int mainAIrDataLength = tbMainAir.Text.Length; 
+
+                    #region 메인 에어 제어
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("C4".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("04".ToString(), 16);
+
+                    switch (mainAIrDataLength)
+                    {
+                        case 2:
+                            byteSendData[5] = Convert.ToByte("00", 16);
+                            byteSendData[6] = Convert.ToByte("00", 16);
+                            byteSendData[7] = Convert.ToByte("00", 16);
+                            byteSendData[8] = Convert.ToByte(tbMainAir.Text.Substring(0, 2), 16);
+                            break;
+                        case 4:
+                            byteSendData[5] = Convert.ToByte("00", 16);
+                            byteSendData[6] = Convert.ToByte("00", 16);
+                            byteSendData[7] = Convert.ToByte(tbMainAir.Text.Substring(0, 2), 16);
+                            byteSendData[8] = Convert.ToByte(tbMainAir.Text.Substring(2, 2), 16);
+                            break;
+                        case 6:
+                            byteSendData[5] = Convert.ToByte("00", 16);
+                            byteSendData[6] = Convert.ToByte(tbMainAir.Text.Substring(0, 2), 16);
+                            byteSendData[7] = Convert.ToByte(tbMainAir.Text.Substring(2, 2), 16);
+                            byteSendData[8] = Convert.ToByte(tbMainAir.Text.Substring(4, 2), 16);
+                            break;
+                        case 8:
+                            byteSendData[5] = Convert.ToByte(tbMainAir.Text.Substring(0, 2), 16);
+                            byteSendData[6] = Convert.ToByte(tbMainAir.Text.Substring(2, 2), 16);
+                            byteSendData[7] = Convert.ToByte(tbMainAir.Text.Substring(4, 2), 16);
+                            byteSendData[8] = Convert.ToByte(tbMainAir.Text.Substring(6, 2), 16);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    for (byte i = 0; i < iSendCount - 1; i++)
+                    {
+                        byteCheckSum += byteSendData[i];
+                        byteCheckSum &= 0xff;
+                    }
+                    byteSendData[9] = byteCheckSum;
+
+                    #endregion
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
+
+        private void btLegAir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Form2Port1.IsOpen)
+                {
+                    byte[] byteSendData = new byte[7] { 0, 0, 0, 0, 0, 0, 0 };
+                    int iSendCount = 7;
+                    byte byteCheckSum = 0;
+
+                    #region 주무름 동작
+                    byteSendData[0] = Convert.ToByte("24".ToString(), 16);
+                    byteSendData[1] = Convert.ToByte("52".ToString(), 16);
+                    byteSendData[2] = Convert.ToByte("41".ToString(), 16);
+                    byteSendData[3] = Convert.ToByte("C5".ToString(), 16);
+                    byteSendData[4] = Convert.ToByte("01".ToString(), 16);
+                    byteSendData[5] = Convert.ToByte(tbLegAir.Text.ToString(), 16);
+                    #endregion
+                    for (byte i = 0; i < iSendCount - 1; i++)
+                    {
+                        byteCheckSum += byteSendData[i];
+                        byteCheckSum &= 0xff;
+                    }
+                    byteSendData[6] = byteCheckSum;
+                    Form2Port1.Write(byteSendData, 0, iSendCount);
+                }
+                else
+                {
+                    MessageBox.Show("시리얼포트가 열리지 않았습니다");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("시리얼전송시 문제가 발생하였습니다");
+            }
+            finally
+            {
+                //reserve
+            }
+        }
     }
 }

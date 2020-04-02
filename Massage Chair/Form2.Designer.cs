@@ -62,6 +62,10 @@
             this.btKneadRun = new System.Windows.Forms.Button();
             this.btWalkHold = new System.Windows.Forms.Button();
             this.btKneadStop = new System.Windows.Forms.Button();
+            this.btMainAir = new System.Windows.Forms.Button();
+            this.btLegAir = new System.Windows.Forms.Button();
+            this.tbMainAir = new System.Windows.Forms.TextBox();
+            this.tbLegAir = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cbWidth
@@ -320,7 +324,7 @@
             // 
             // btPower
             // 
-            this.btPower.Location = new System.Drawing.Point(920, 32);
+            this.btPower.Location = new System.Drawing.Point(26, 90);
             this.btPower.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btPower.Name = "btPower";
             this.btPower.Size = new System.Drawing.Size(121, 23);
@@ -331,7 +335,7 @@
             // 
             // btBodyScan
             // 
-            this.btBodyScan.Location = new System.Drawing.Point(1067, 32);
+            this.btBodyScan.Location = new System.Drawing.Point(153, 90);
             this.btBodyScan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btBodyScan.Name = "btBodyScan";
             this.btBodyScan.Size = new System.Drawing.Size(121, 23);
@@ -342,7 +346,7 @@
             // 
             // btWalkUp
             // 
-            this.btWalkUp.Location = new System.Drawing.Point(920, 71);
+            this.btWalkUp.Location = new System.Drawing.Point(26, 117);
             this.btWalkUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btWalkUp.Name = "btWalkUp";
             this.btWalkUp.Size = new System.Drawing.Size(121, 23);
@@ -353,7 +357,7 @@
             // 
             // btWalkDown
             // 
-            this.btWalkDown.Location = new System.Drawing.Point(1067, 71);
+            this.btWalkDown.Location = new System.Drawing.Point(153, 117);
             this.btWalkDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btWalkDown.Name = "btWalkDown";
             this.btWalkDown.Size = new System.Drawing.Size(121, 23);
@@ -364,7 +368,7 @@
             // 
             // btKneadRun
             // 
-            this.btKneadRun.Location = new System.Drawing.Point(920, 108);
+            this.btKneadRun.Location = new System.Drawing.Point(26, 144);
             this.btKneadRun.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btKneadRun.Name = "btKneadRun";
             this.btKneadRun.Size = new System.Drawing.Size(121, 23);
@@ -375,7 +379,7 @@
             // 
             // btWalkHold
             // 
-            this.btWalkHold.Location = new System.Drawing.Point(1205, 71);
+            this.btWalkHold.Location = new System.Drawing.Point(280, 117);
             this.btWalkHold.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btWalkHold.Name = "btWalkHold";
             this.btWalkHold.Size = new System.Drawing.Size(121, 23);
@@ -386,7 +390,7 @@
             // 
             // btKneadStop
             // 
-            this.btKneadStop.Location = new System.Drawing.Point(1067, 108);
+            this.btKneadStop.Location = new System.Drawing.Point(153, 144);
             this.btKneadStop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btKneadStop.Name = "btKneadStop";
             this.btKneadStop.Size = new System.Drawing.Size(121, 23);
@@ -395,12 +399,52 @@
             this.btKneadStop.UseVisualStyleBackColor = true;
             this.btKneadStop.Click += new System.EventHandler(this.btKneadStop_Click);
             // 
+            // btMainAir
+            // 
+            this.btMainAir.Location = new System.Drawing.Point(407, 90);
+            this.btMainAir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btMainAir.Name = "btMainAir";
+            this.btMainAir.Size = new System.Drawing.Size(121, 23);
+            this.btMainAir.TabIndex = 34;
+            this.btMainAir.Text = "메인에어";
+            this.btMainAir.UseVisualStyleBackColor = true;
+            this.btMainAir.Click += new System.EventHandler(this.btMainAir_Click);
+            // 
+            // btLegAir
+            // 
+            this.btLegAir.Location = new System.Drawing.Point(407, 117);
+            this.btLegAir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btLegAir.Name = "btLegAir";
+            this.btLegAir.Size = new System.Drawing.Size(121, 23);
+            this.btLegAir.TabIndex = 35;
+            this.btLegAir.Text = "다리에어";
+            this.btLegAir.UseVisualStyleBackColor = true;
+            this.btLegAir.Click += new System.EventHandler(this.btLegAir_Click);
+            // 
+            // tbMainAir
+            // 
+            this.tbMainAir.Location = new System.Drawing.Point(554, 90);
+            this.tbMainAir.Name = "tbMainAir";
+            this.tbMainAir.Size = new System.Drawing.Size(100, 21);
+            this.tbMainAir.TabIndex = 36;
+            // 
+            // tbLegAir
+            // 
+            this.tbLegAir.Location = new System.Drawing.Point(554, 117);
+            this.tbLegAir.Name = "tbLegAir";
+            this.tbLegAir.Size = new System.Drawing.Size(100, 21);
+            this.tbLegAir.TabIndex = 37;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1383, 846);
+            this.Controls.Add(this.tbLegAir);
+            this.Controls.Add(this.tbMainAir);
+            this.Controls.Add(this.btLegAir);
+            this.Controls.Add(this.btMainAir);
             this.Controls.Add(this.btKneadStop);
             this.Controls.Add(this.btWalkHold);
             this.Controls.Add(this.btKneadRun);
@@ -481,5 +525,9 @@
         private System.Windows.Forms.Button btKneadRun;
         private System.Windows.Forms.Button btWalkHold;
         private System.Windows.Forms.Button btKneadStop;
+        private System.Windows.Forms.Button btMainAir;
+        private System.Windows.Forms.Button btLegAir;
+        private System.Windows.Forms.TextBox tbMainAir;
+        private System.Windows.Forms.TextBox tbLegAir;
     }
 }
