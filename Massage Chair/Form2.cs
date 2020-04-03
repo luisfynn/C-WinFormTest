@@ -19,6 +19,7 @@ namespace Massage_Chair
         public SerialPort Form2Port1 { get => Form2Port; set => Form2Port = value; }
 
         public bool bIsPowerOpen;
+        string localpath;
 
         private int listMaxCount = 0;
         private int listCurrentCount = 0;
@@ -52,6 +53,12 @@ namespace Massage_Chair
             SEC_NONE, SEC_0_1, SEC_0_2, SEC_0_3, SEC_0_4, SEC_0_5, SEC_1_0, SEC_1_2, SEC_1_3, SEC_1_4, SEC_1_5, SEC_2_0, SEC_2_1, SEC_2_3, SEC_2_4, SEC_2_5,
             SEC_3_0, SEC_3_1, SEC_3_2, SEC_3_4, SEC_3_5, SEC_4_0, SEC_4_1, SEC_4_2, SEC_4_3, SEC_4_5, SEC_5_0, SEC_5_1, SEC_5_2, SEC_5_3, SEC_5_4,
         }
+
+        public enum optMassageXdAdj
+        {
+            XD_AD_STEP_1, XD_AD_STEP_2, XD_AD_STEP_3, XD_AD_STEP_MAX,
+        }
+
         public enum optMassageInterwork
         {
             NONE, SHOULDER, HIP_RELEASE, SEAT_BACK, SEAT_NOT_SHOULDER, AUTOCARE,
@@ -61,7 +68,7 @@ namespace Massage_Chair
 
         public struct MassageMap
         {
-            static public byte count = 10;
+            static public byte count = 11;
             public optMassageType massageType;
             public optMassageWalkLoc walkHoldTime;
             public optMassagePower walkSpeed;
@@ -71,11 +78,12 @@ namespace Massage_Chair
             public optMassageXdLoc xdHoldTime;
             public optMassagePower xdDuty;
             public optMassageXdRepeat xdRepeat;
+            public optMassageXdAdj XdAdj;
             public optMassageInterwork interwork;
 
             public MassageMap
             (optMassageType _type, optMassageWalkLoc _whold, optMassagePower _wduty, optMassageWidth _width, optMassagePower _tduty,
-                optMassagePower _kduty, optMassageXdLoc _xhold, optMassagePower _xdDuty, optMassageXdRepeat _repeat, optMassageInterwork _inwork)
+                optMassagePower _kduty, optMassageXdLoc _xhold, optMassagePower _xdDuty, optMassageXdRepeat _repeat, optMassageXdAdj _xdAdj, optMassageInterwork _inwork)
             {
                 massageType = _type;
                 walkHoldTime = _whold;
@@ -86,6 +94,7 @@ namespace Massage_Chair
                 xdHoldTime = _xhold;
                 xdDuty = _xdDuty;
                 xdRepeat = _repeat;
+                XdAdj = _xdAdj;
                 interwork = _inwork;
             }
         }
@@ -116,13 +125,14 @@ namespace Massage_Chair
             #endregion 
 
             bIsPowerOpen = false;
+            localpath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         }
 
         private void btAdd_Click(object sender, EventArgs e)
         {
             massageList.Add(new MassageMap((optMassageType)cbType.SelectedItem, (optMassageWalkLoc)cbWalkLoc.SelectedItem, (optMassagePower)cbWalkSpd.SelectedItem, 
                 (optMassageWidth)cbWidth.SelectedItem,(optMassagePower)cbTapSpd.SelectedItem, (optMassagePower)cbKneadSpd.SelectedItem, 
-                (optMassageXdLoc)cbXdLoc.SelectedItem, (optMassagePower)cbXdSpd.SelectedItem, (optMassageXdRepeat)cbXdRepeat.SelectedItem,
+                (optMassageXdLoc)cbXdLoc.SelectedItem, (optMassagePower)cbXdSpd.SelectedItem, (optMassageXdRepeat)cbXdRepeat.SelectedItem, optMassageXdAdj.XD_AD_STEP_MAX,
                 (optMassageInterwork)cbInterWork.SelectedItem));
 
             updateRichTextBox = drawAddRichTextContents;
@@ -147,10 +157,186 @@ namespace Massage_Chair
             WriteTextFile(richTextBox1.Text);
         }
 
+#if false
+#region 마사지타입 변환
+        private optMassageType funcMassageType(string type)
+        {
+            optMassageType retType = optMassageType.KNEAD;
+
+            switch (type)
+            {
+                case "KNEAD":
+                    retType = optMassageType.KNEAD;
+                    break;
+                case "KNEAD_R":
+                    retType = optMassageType.KNEAD_R;
+                    break;
+                case "TAP":
+                    retType = optMassageType.TAP;
+                    break;
+                case "MIX":
+                    retType = optMassageType.MIX;
+                    break;
+                case "PRESS":
+                    retType = optMassageType.PRESS;
+                    break;
+                case "SOFT_TAP":
+                    retType = optMassageType.SOFT_TAP;
+                    break;
+                case "SWING":
+                    retType = optMassageType.SWING;
+                    break;
+                case "SWING_TAP":
+                    retType = optMassageType.SWING_TAP;
+                    break;
+                case "SWING_SOFT_TAP":
+                    retType = optMassageType.SWING_SOFT_TAP;
+                    break;
+                case "KNEAD_SOFT_TAP":
+                    retType = optMassageType.KNEAD_SOFT_TAP;
+                    break;
+                default:
+                    break;
+            }
+            return retType;
+        }
+#endregion
+#region 모듈위치 변환
+        private optMassageWalkLoc funcModuleLocation(string type)
+        {
+            optMassageWalkLoc retType = optMassageWalkLoc.HEAD_BACK;
+
+            switch (type)
+            {
+                case "PARK":
+                    retType = optMassageWalkLoc.PARK;
+                    break;
+                case "TOP":
+                    retType = optMassageWalkLoc.TOP;
+                    break;
+                case "HEAD_BACK":
+                    retType = optMassageWalkLoc.HEAD_BACK;
+                    break;
+                case "NECK":
+                    retType = optMassageWalkLoc.NECK;
+                    break;
+                case "NECK_MID":
+                    retType = optMassageWalkLoc.NECK_MID;
+                    break;
+                case "SHOULDER":
+                    retType = optMassageWalkLoc.SHOULDER;
+                    break;
+                case "SW_1_10":
+                    retType = optMassageWalkLoc.SW_1_10;
+                    break;
+                case "SW_2_10":
+                    retType = optMassageWalkLoc.SW_2_10;
+                    break;
+                case "SW_3_10":
+                    retType = optMassageWalkLoc.SW_3_10;
+                    break;
+                case "SW_4_10":
+                    retType = optMassageWalkLoc.SW_4_10;
+                    break;
+                case "SW_5_10":
+                    retType = optMassageWalkLoc.SW_5_10;
+                    break;
+                case "SW_6_10":
+                    retType = optMassageWalkLoc.SW_6_10;
+                    break;
+                case "SW_7_10":
+                    retType = optMassageWalkLoc.SW_7_10;
+                    break;
+                case "SW_8_10":
+                    retType = optMassageWalkLoc.SW_8_10;
+                    break;
+                case "SW_9_10":
+                    retType = optMassageWalkLoc.SW_9_10;
+                    break;
+                case "WAIST":
+                    retType = optMassageWalkLoc.WAIST;
+                    break;
+                case "HIP_H":
+                    retType = optMassageWalkLoc.HIP_H;
+                    break;
+                case "HIP_L":
+                    retType = optMassageWalkLoc.HIP_L;
+                    break;
+                default:
+                    break;
+            }
+            return retType;
+        }
+#endregion
+#endif
+        public static class EnumUtil<T>
+        {
+            public static T Parse(string s)
+            {
+                return (T)Enum.Parse(typeof(T), s);
+            }
+        }
+
+        public optMassageType GetTypeFromString(string type)
+        {
+            optMassageType c = EnumUtil<optMassageType>.Parse(type);
+
+            return c;
+        }
+
+        public optMassageWalkLoc GetLocationFromString(string location)
+        {
+            optMassageWalkLoc c = EnumUtil<optMassageWalkLoc>.Parse(location);
+
+            return c;
+        }
+
+        public optMassagePower GetPowerFromString(string power)
+        {
+            optMassagePower c = EnumUtil<optMassagePower>.Parse(power);
+
+            return c;
+        }
+
+        public optMassageWidth GetWidthFromString(string width)
+        {
+            optMassageWidth c = EnumUtil<optMassageWidth>.Parse(width);
+
+            return c;
+        }
+
+        public optMassageXdLoc GetXdLocationFromString(string location)
+        {
+            optMassageXdLoc c = EnumUtil<optMassageXdLoc>.Parse(location);
+
+            return c;
+        }
+
+        public optMassageXdRepeat GetXdRepeatFromString(string repeat)
+        {
+            optMassageXdRepeat c = EnumUtil<optMassageXdRepeat>.Parse(repeat);
+
+            return c;
+        }
+
+        public optMassageXdAdj GetXdAdjFromString(string xdAdj)
+        {
+            optMassageXdAdj c = EnumUtil<optMassageXdAdj>.Parse(xdAdj);
+
+            return c;
+        }
+
+        public optMassageInterwork GetInterworkFromString(string interwork)
+        {
+            optMassageInterwork c = EnumUtil<optMassageInterwork>.Parse(interwork);
+
+            return c;
+        }
+
         private void btLoad_Click(object sender, EventArgs e)
         {
             //text 파일 경로 지정
-            string folder = Application.StartupPath + @"\VSoutput";
+            string folder = localpath + @"\VSoutput";
 
             //text 파일명 지정
             string textFile = folder + @"\output.txt";
@@ -169,40 +355,50 @@ namespace Massage_Chair
                 //message 내용을 구분자로 분류하여, massageLoadList에 넣기
                 message = message.Trim();
 
-                string[] deLimiterChars = new string[] { "{", "}", "\n", "," };
+                string[] deLimiterChars = new string[] { "{", "}", "\n", ","," " };
                 string[] messagedeLimit = message.Split(deLimiterChars, StringSplitOptions.RemoveEmptyEntries);
 
-                massageLoadList = new List<MassageMap>();
-
+                massageList.Clear();
 #region underconstruction..
-#if false
+#if true
                 int rowMax = messagedeLimit.Count() / MassageMap.count;
+
+                richTextBox1.Clear();
 
                 for (int i = 0; i < rowMax; i++)
                 {
                     int colIndex = i * MassageMap.count;
-                    massageLoadList.Add(new MassageMap(messagedeLimit[colIndex + 0], messagedeLimit[colIndex + 1], messagedeLimit[colIndex + 2], messagedeLimit[colIndex + 3],
-                                                        messagedeLimit[colIndex + 4], messagedeLimit[colIndex + 5], messagedeLimit[colIndex + 6], messagedeLimit[colIndex + 7],
-                                                        messagedeLimit[colIndex + 8], messagedeLimit[colIndex + 9], messagedeLimit[colIndex + 10]));
+                    massageList.Add(new MassageMap(GetTypeFromString(messagedeLimit[colIndex + 0]), GetLocationFromString(messagedeLimit[colIndex + 1]),
+                                                       GetPowerFromString(messagedeLimit[colIndex + 2]), GetWidthFromString(messagedeLimit[colIndex + 3]),
+                                                        GetPowerFromString(messagedeLimit[colIndex + 4]), GetPowerFromString(messagedeLimit[colIndex + 5]),
+                                                        GetXdLocationFromString(messagedeLimit[colIndex + 6]), GetPowerFromString(messagedeLimit[colIndex + 7]),
+                                                        GetXdRepeatFromString(messagedeLimit[colIndex + 8]), GetXdAdjFromString(messagedeLimit[colIndex + 9]),
+                                                        GetInterworkFromString(messagedeLimit[colIndex + 10])));
                 }
 
-                richTextBox1.Text = messagedeLimit.Count().ToString() + Environment.NewLine;
+                //richTextBox1.Text = messagedeLimit.Count().ToString() + Environment.NewLine;
+                //updateRichTextBox = drawAddRichTextContents;
+                //updateRichTextBox();
 
-                for (int i = 0; i < massageLoadList.Count; i++)
+#if true
+                for (int i = 0; i < massageList.Count; i++)
                 {
-                    richTextBox1.Text += massageLoadList[i].massageType;
-                    richTextBox1.Text += massageLoadList[i].walkHoldTime;
-                    richTextBox1.Text += massageLoadList[i].walkSpeed;
-                    richTextBox1.Text += massageLoadList[i].width;
-                    richTextBox1.Text += massageLoadList[i].tDuty;
-                    richTextBox1.Text += massageLoadList[i].kDuty;
-                    richTextBox1.Text += massageLoadList[i].xdHoldTime;
-                    richTextBox1.Text += massageLoadList[i].xdDuty;
-                    richTextBox1.Text += massageLoadList[i].xdRepeat;
-                    richTextBox1.Text += massageLoadList[i].xdAdj;
-                    richTextBox1.Text += massageLoadList[i].interwork;
+                    richTextBox1.Text += "{";
+                    richTextBox1.Text += massageList[i].massageType + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].walkHoldTime + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].walkSpeed + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].width + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].tDuty + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].kDuty + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].xdHoldTime + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].xdDuty + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].xdRepeat + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].XdAdj + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += massageList[i].interwork + String.Empty.PadRight(4, ' ') + ",";
+                    richTextBox1.Text += "}";
                     richTextBox1.Text += Environment.NewLine;
                 }
+#endif
 #endif
 #endregion
             }
@@ -243,6 +439,7 @@ namespace Massage_Chair
             richTextBox1.Text += massageList[listNum].xdHoldTime + String.Empty.PadRight(4, ' ') + ",";
             richTextBox1.Text += massageList[listNum].xdDuty + String.Empty.PadRight(4, ' ') + ",";
             richTextBox1.Text += massageList[listNum].xdRepeat + String.Empty.PadRight(4, ' ') + ",";
+            richTextBox1.Text += massageList[listNum].XdAdj + String.Empty.PadRight(4, ' ') + ",";
             richTextBox1.Text += massageList[listNum].interwork + String.Empty.PadRight(4, ' ');
             richTextBox1.Text += "},";
 
@@ -260,8 +457,8 @@ namespace Massage_Chair
 
         private void WriteTextFile(string text)
         {
-            //text 파일 저장할 폴더 지정
-            string folder = Application.StartupPath + @"\VSoutput";
+            //text 파일 저장할 폴더 지정(바탕화면 soutput)
+            string folder = localpath + @"\VSoutput";
 
             //폴더가 없을 경우 생성
             DirectoryInfo dirInfo = new DirectoryInfo(folder);
@@ -381,7 +578,7 @@ namespace Massage_Chair
                             bIsPowerOpen = true;
                             btPower.Text = "전원 켜짐";
 
-                            #region 전원 켬
+#region 전원 켬
                             //The REX power on command
                             byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                             byteSendData[1] = Convert.ToByte("52".ToString(), 16);
@@ -391,13 +588,13 @@ namespace Massage_Chair
                             byteSendData[5] = Convert.ToByte("01".ToString(), 16);
                             byteSendData[6] = Convert.ToByte("01".ToString(), 16);
                             byteSendData[7] = Convert.ToByte("BC".ToString(), 16);
-                            #endregion
+#endregion
                             break;
                         default:
                             bIsPowerOpen = false;
                             btPower.Text = "전원 꺼짐";
 
-                            #region 전원 끔
+#region 전원 끔
                             //The REX power off command
                             byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                             byteSendData[1] = Convert.ToByte("52".ToString(), 16);
@@ -407,7 +604,7 @@ namespace Massage_Chair
                             byteSendData[5] = Convert.ToByte("01".ToString(), 16);
                             byteSendData[6] = Convert.ToByte("00".ToString(), 16);
                             byteSendData[7] = Convert.ToByte("BB".ToString(), 16);
-                            #endregion
+#endregion
                             break;
                     }
                     Form2Port1.Write(byteSendData, 0, iSendCount);
@@ -436,7 +633,7 @@ namespace Massage_Chair
                     byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 8;
 
-                    #region 체형인식 완료 커맨드
+#region 체형인식 완료 커맨드
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
@@ -445,7 +642,7 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("00".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("7C".ToString(), 16);
-                    #endregion
+#endregion
 
                     Form2Port1.Write(byteSendData, 0, iSendCount);
                 }
@@ -473,7 +670,7 @@ namespace Massage_Chair
                     byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 8;
 
-                    #region 모듈 위로 올림
+#region 모듈 위로 올림
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
@@ -482,7 +679,7 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("22".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("DD".ToString(), 16);
-                    #endregion
+#endregion
                     Form2Port1.Write(byteSendData, 0, iSendCount);
                 }
                 else
@@ -509,7 +706,7 @@ namespace Massage_Chair
                     byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 8;
 
-                    #region 모듈 아래로 내림
+#region 모듈 아래로 내림
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
@@ -518,7 +715,7 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("22".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("02".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("DE".ToString(), 16);
-                    #endregion
+#endregion
                     Form2Port1.Write(byteSendData, 0, iSendCount);
                 }
                 else
@@ -545,7 +742,7 @@ namespace Massage_Chair
                     byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 8;
 
-                    #region 모듈 멈춤
+#region 모듈 멈춤
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
@@ -554,7 +751,7 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("22".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("FF".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("DB".ToString(), 16);
-                    #endregion
+#endregion
                     Form2Port1.Write(byteSendData, 0, iSendCount);
                 }
                 else
@@ -581,7 +778,7 @@ namespace Massage_Chair
                     byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 8;
 
-                    #region 주무름 동작
+#region 주무름 동작
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
@@ -590,7 +787,7 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("00".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("7D".ToString(), 16);
-                    #endregion
+#endregion
                     Form2Port1.Write(byteSendData, 0, iSendCount);
                 }
                 else
@@ -617,7 +814,7 @@ namespace Massage_Chair
                     byte[] byteSendData = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 8;
 
-                    #region 주무름 동작
+#region 주무름 동작
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
@@ -626,7 +823,7 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("00".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("00".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("7C".ToString(), 16);
-                    #endregion
+#endregion
                     Form2Port1.Write(byteSendData, 0, iSendCount);
                 }
                 else
@@ -655,7 +852,7 @@ namespace Massage_Chair
                     byte byteCheckSum = 0;
                     int mainAIrDataLength = tbMainAir.Text.Length; 
 
-                    #region 메인 에어 제어
+#region 메인 에어 제어
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
@@ -699,7 +896,7 @@ namespace Massage_Chair
                     }
                     byteSendData[9] = byteCheckSum;
 
-                    #endregion
+#endregion
                     Form2Port1.Write(byteSendData, 0, iSendCount);
                 }
                 else
@@ -727,14 +924,14 @@ namespace Massage_Chair
                     int iSendCount = 7;
                     byte byteCheckSum = 0;
 
-                    #region 주무름 동작
+#region 주무름 동작
                     byteSendData[0] = Convert.ToByte("24".ToString(), 16);
                     byteSendData[1] = Convert.ToByte("52".ToString(), 16);
                     byteSendData[2] = Convert.ToByte("41".ToString(), 16);
                     byteSendData[3] = Convert.ToByte("C5".ToString(), 16);
                     byteSendData[4] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[5] = Convert.ToByte(tbLegAir.Text.ToString(), 16);
-                    #endregion
+#endregion
                     for (byte i = 0; i < iSendCount - 1; i++)
                     {
                         byteCheckSum += byteSendData[i];
