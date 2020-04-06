@@ -24,6 +24,10 @@ namespace Massage_Chair
         private int listMaxCount = 0;
         private int listCurrentCount = 0;
 
+        private int uiFindFirstIndex = 0;
+        private int uiFindLastIndex = 0;
+        private int uiFindIndexLength = 0;
+
         enum optOperate
         {
             ADD,
@@ -494,7 +498,7 @@ namespace Massage_Chair
                     byte[] byteSendData = new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     int iSendCount = 0;
                     int iDataCount = 0;
-#region 전원커맨드 전송 테스트
+                    #region 전원커맨드 전송 테스트
                     //The REX power on command
                     iSendCount = 8;
 
@@ -506,7 +510,7 @@ namespace Massage_Chair
                     byteSendData[5] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[6] = Convert.ToByte("01".ToString(), 16);
                     byteSendData[7] = Convert.ToByte("BC".ToString(), 16);
-#endregion
+                    #endregion
 
                     listMaxCount = massageList.Count;
                     iDataCount = byteSendData.Length - 6;
@@ -532,7 +536,7 @@ namespace Massage_Chair
 
                     byte sum = 0;
 
-                    foreach(var s in byteSendData)
+                    foreach (var s in byteSendData)
                     {
                         sum += s;
                     }
@@ -540,6 +544,44 @@ namespace Massage_Chair
                     sum = (byte)(sum & 0xff);
                     byteSendData[15] = sum;
 
+                    //하이라이트 취소
+                    uiFindFirstIndex = richTextBox1.Text.IndexOf("{");
+                    uiFindLastIndex = richTextBox1.Text.LastIndexOf("}");
+                    uiFindIndexLength = uiFindLastIndex - uiFindFirstIndex + 1;
+
+                    richTextBox1.Select(uiFindFirstIndex, uiFindIndexLength);
+                    richTextBox1.SelectionBackColor = Form2.DefaultBackColor;
+
+                    //전송할 마사지맵 하이라이트
+                    uiFindFirstIndex = richTextBox1.Text.IndexOf("{");
+                    uiFindLastIndex = richTextBox1.Text.IndexOf("}");
+                    uiFindIndexLength = uiFindLastIndex - uiFindFirstIndex + 1;
+
+                    richTextBox1.BackColor = Form2.DefaultBackColor;
+
+                    if (listCurrentCount == 0)
+                    {
+                        richTextBox1.Select(uiFindFirstIndex, uiFindIndexLength);
+                        richTextBox1.SelectionBackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        for (int iCount = 0; iCount < listCurrentCount; iCount++)
+                        {
+                            uiFindFirstIndex = richTextBox1.Text.IndexOf("{", uiFindFirstIndex + 1);
+                        }
+
+                        for (int iCount = 0; iCount < listCurrentCount; iCount++)
+                        {
+                            uiFindLastIndex = richTextBox1.Text.IndexOf("}", uiFindLastIndex + 1);
+                        }
+
+                        richTextBox1.Select(uiFindFirstIndex, uiFindIndexLength);
+                        richTextBox1.SelectionBackColor = Color.Yellow;
+
+                    }
+
+                    //해당 마사지맵 전송
                     Form2Port1.Write(byteSendData, 0, iSendCount);
 
                     listCurrentCount++;

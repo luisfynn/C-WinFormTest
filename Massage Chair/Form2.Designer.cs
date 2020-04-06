@@ -401,7 +401,7 @@
             // 
             // btMainAir
             // 
-            this.btMainAir.Location = new System.Drawing.Point(407, 90);
+            this.btMainAir.Location = new System.Drawing.Point(534, 90);
             this.btMainAir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btMainAir.Name = "btMainAir";
             this.btMainAir.Size = new System.Drawing.Size(121, 23);
@@ -412,7 +412,7 @@
             // 
             // btLegAir
             // 
-            this.btLegAir.Location = new System.Drawing.Point(407, 117);
+            this.btLegAir.Location = new System.Drawing.Point(534, 117);
             this.btLegAir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btLegAir.Name = "btLegAir";
             this.btLegAir.Size = new System.Drawing.Size(121, 23);
@@ -423,14 +423,14 @@
             // 
             // tbMainAir
             // 
-            this.tbMainAir.Location = new System.Drawing.Point(554, 90);
+            this.tbMainAir.Location = new System.Drawing.Point(661, 90);
             this.tbMainAir.Name = "tbMainAir";
             this.tbMainAir.Size = new System.Drawing.Size(100, 21);
             this.tbMainAir.TabIndex = 36;
             // 
             // tbLegAir
             // 
-            this.tbLegAir.Location = new System.Drawing.Point(554, 117);
+            this.tbLegAir.Location = new System.Drawing.Point(661, 117);
             this.tbLegAir.Name = "tbLegAir";
             this.tbLegAir.Size = new System.Drawing.Size(100, 21);
             this.tbLegAir.TabIndex = 37;
