@@ -66,111 +66,115 @@
             this.btLegAir = new System.Windows.Forms.Button();
             this.tbMainAir = new System.Windows.Forms.TextBox();
             this.tbLegAir = new System.Windows.Forms.TextBox();
+            this.masageFileOpen = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // cbWidth
             // 
             this.cbWidth.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbWidth.FormattingEnabled = true;
-            this.cbWidth.Location = new System.Drawing.Point(439, 227);
+            this.cbWidth.Location = new System.Drawing.Point(936, 227);
             this.cbWidth.Name = "cbWidth";
-            this.cbWidth.Size = new System.Drawing.Size(121, 19);
+            this.cbWidth.Size = new System.Drawing.Size(300, 19);
             this.cbWidth.TabIndex = 5;
             // 
             // cbTapSpd
             // 
             this.cbTapSpd.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbTapSpd.FormattingEnabled = true;
-            this.cbTapSpd.Location = new System.Drawing.Point(566, 228);
+            this.cbTapSpd.Location = new System.Drawing.Point(1242, 227);
             this.cbTapSpd.Name = "cbTapSpd";
-            this.cbTapSpd.Size = new System.Drawing.Size(121, 19);
+            this.cbTapSpd.Size = new System.Drawing.Size(300, 19);
             this.cbTapSpd.TabIndex = 4;
             // 
             // cbType
             // 
             this.cbType.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbType.FormattingEnabled = true;
-            this.cbType.Location = new System.Drawing.Point(25, 227);
+            this.cbType.Location = new System.Drawing.Point(12, 227);
             this.cbType.Name = "cbType";
-            this.cbType.Size = new System.Drawing.Size(121, 19);
+            this.cbType.Size = new System.Drawing.Size(300, 19);
             this.cbType.TabIndex = 0;
             // 
             // cbWalkSpd
             // 
             this.cbWalkSpd.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbWalkSpd.FormattingEnabled = true;
-            this.cbWalkSpd.Location = new System.Drawing.Point(281, 227);
+            this.cbWalkSpd.Location = new System.Drawing.Point(630, 227);
             this.cbWalkSpd.Name = "cbWalkSpd";
-            this.cbWalkSpd.Size = new System.Drawing.Size(148, 19);
+            this.cbWalkSpd.Size = new System.Drawing.Size(300, 19);
             this.cbWalkSpd.TabIndex = 1;
             // 
             // cbWalkLoc
             // 
             this.cbWalkLoc.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbWalkLoc.FormattingEnabled = true;
-            this.cbWalkLoc.Location = new System.Drawing.Point(154, 228);
+            this.cbWalkLoc.Location = new System.Drawing.Point(324, 227);
             this.cbWalkLoc.Name = "cbWalkLoc";
-            this.cbWalkLoc.Size = new System.Drawing.Size(121, 19);
+            this.cbWalkLoc.Size = new System.Drawing.Size(300, 19);
             this.cbWalkLoc.TabIndex = 2;
             // 
             // cbXdLoc
             // 
             this.cbXdLoc.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbXdLoc.FormattingEnabled = true;
-            this.cbXdLoc.Location = new System.Drawing.Point(822, 227);
+            this.cbXdLoc.Location = new System.Drawing.Point(324, 273);
             this.cbXdLoc.Name = "cbXdLoc";
-            this.cbXdLoc.Size = new System.Drawing.Size(121, 19);
+            this.cbXdLoc.Size = new System.Drawing.Size(300, 19);
             this.cbXdLoc.TabIndex = 3;
             // 
             // cbXdSpd
             // 
             this.cbXdSpd.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbXdSpd.FormattingEnabled = true;
-            this.cbXdSpd.Location = new System.Drawing.Point(949, 228);
+            this.cbXdSpd.Location = new System.Drawing.Point(630, 273);
             this.cbXdSpd.Name = "cbXdSpd";
-            this.cbXdSpd.Size = new System.Drawing.Size(121, 19);
+            this.cbXdSpd.Size = new System.Drawing.Size(300, 19);
             this.cbXdSpd.TabIndex = 9;
             // 
             // cbXdRepeat
             // 
             this.cbXdRepeat.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbXdRepeat.FormattingEnabled = true;
-            this.cbXdRepeat.Location = new System.Drawing.Point(1076, 228);
+            this.cbXdRepeat.Location = new System.Drawing.Point(936, 273);
             this.cbXdRepeat.Name = "cbXdRepeat";
-            this.cbXdRepeat.Size = new System.Drawing.Size(121, 19);
+            this.cbXdRepeat.Size = new System.Drawing.Size(300, 19);
             this.cbXdRepeat.TabIndex = 8;
             // 
             // cbKneadSpd
             // 
             this.cbKneadSpd.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbKneadSpd.FormattingEnabled = true;
-            this.cbKneadSpd.Location = new System.Drawing.Point(693, 227);
+            this.cbKneadSpd.Location = new System.Drawing.Point(12, 273);
             this.cbKneadSpd.Name = "cbKneadSpd";
-            this.cbKneadSpd.Size = new System.Drawing.Size(121, 19);
+            this.cbKneadSpd.Size = new System.Drawing.Size(300, 19);
             this.cbKneadSpd.TabIndex = 7;
             // 
             // cbInterWork
             // 
             this.cbInterWork.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbInterWork.FormattingEnabled = true;
-            this.cbInterWork.Location = new System.Drawing.Point(1202, 227);
+            this.cbInterWork.Location = new System.Drawing.Point(1242, 273);
             this.cbInterWork.Name = "cbInterWork";
-            this.cbInterWork.Size = new System.Drawing.Size(121, 19);
+            this.cbInterWork.Size = new System.Drawing.Size(300, 19);
             this.cbInterWork.TabIndex = 6;
             // 
             // richTextBox1
             // 
+            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBox1.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.richTextBox1.Location = new System.Drawing.Point(26, 267);
+            this.richTextBox1.Location = new System.Drawing.Point(12, 298);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(1300, 633);
+            this.richTextBox1.Size = new System.Drawing.Size(1433, 602);
             this.richTextBox1.TabIndex = 10;
             this.richTextBox1.Text = "";
             // 
             // btAdd
             // 
-            this.btAdd.Location = new System.Drawing.Point(26, 32);
+            this.btAdd.Location = new System.Drawing.Point(12, 32);
             this.btAdd.Name = "btAdd";
             this.btAdd.Size = new System.Drawing.Size(121, 23);
             this.btAdd.TabIndex = 11;
@@ -181,7 +185,7 @@
             // lbType
             // 
             this.lbType.AutoSize = true;
-            this.lbType.Location = new System.Drawing.Point(66, 212);
+            this.lbType.Location = new System.Drawing.Point(12, 213);
             this.lbType.Name = "lbType";
             this.lbType.Size = new System.Drawing.Size(34, 12);
             this.lbType.TabIndex = 12;
@@ -189,7 +193,7 @@
             // 
             // btRemove
             // 
-            this.btRemove.Location = new System.Drawing.Point(155, 32);
+            this.btRemove.Location = new System.Drawing.Point(139, 32);
             this.btRemove.Name = "btRemove";
             this.btRemove.Size = new System.Drawing.Size(121, 23);
             this.btRemove.TabIndex = 13;
@@ -199,7 +203,7 @@
             // 
             // btSave
             // 
-            this.btSave.Location = new System.Drawing.Point(281, 32);
+            this.btSave.Location = new System.Drawing.Point(266, 32);
             this.btSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(121, 23);
@@ -210,7 +214,7 @@
             // 
             // btLoad
             // 
-            this.btLoad.Location = new System.Drawing.Point(407, 32);
+            this.btLoad.Location = new System.Drawing.Point(393, 32);
             this.btLoad.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btLoad.Name = "btLoad";
             this.btLoad.Size = new System.Drawing.Size(121, 23);
@@ -221,7 +225,7 @@
             // 
             // btClear
             // 
-            this.btClear.Location = new System.Drawing.Point(534, 32);
+            this.btClear.Location = new System.Drawing.Point(520, 32);
             this.btClear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btClear.Name = "btClear";
             this.btClear.Size = new System.Drawing.Size(121, 23);
@@ -232,7 +236,7 @@
             // 
             // btSend
             // 
-            this.btSend.Location = new System.Drawing.Point(661, 32);
+            this.btSend.Location = new System.Drawing.Point(647, 32);
             this.btSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btSend.Name = "btSend";
             this.btSend.Size = new System.Drawing.Size(121, 23);
@@ -244,7 +248,7 @@
             // lbWalkSpd
             // 
             this.lbWalkSpd.AutoSize = true;
-            this.lbWalkSpd.Location = new System.Drawing.Point(326, 212);
+            this.lbWalkSpd.Location = new System.Drawing.Point(628, 213);
             this.lbWalkSpd.Name = "lbWalkSpd";
             this.lbWalkSpd.Size = new System.Drawing.Size(53, 12);
             this.lbWalkSpd.TabIndex = 18;
@@ -253,7 +257,7 @@
             // lbWalkLoc
             // 
             this.lbWalkLoc.AutoSize = true;
-            this.lbWalkLoc.Location = new System.Drawing.Point(192, 212);
+            this.lbWalkLoc.Location = new System.Drawing.Point(322, 213);
             this.lbWalkLoc.Name = "lbWalkLoc";
             this.lbWalkLoc.Size = new System.Drawing.Size(52, 12);
             this.lbWalkLoc.TabIndex = 19;
@@ -262,7 +266,7 @@
             // lbWidth
             // 
             this.lbWidth.AutoSize = true;
-            this.lbWidth.Location = new System.Drawing.Point(475, 212);
+            this.lbWidth.Location = new System.Drawing.Point(934, 212);
             this.lbWidth.Name = "lbWidth";
             this.lbWidth.Size = new System.Drawing.Size(35, 12);
             this.lbWidth.TabIndex = 20;
@@ -271,7 +275,7 @@
             // lbTapSpd
             // 
             this.lbTapSpd.AutoSize = true;
-            this.lbTapSpd.Location = new System.Drawing.Point(595, 212);
+            this.lbTapSpd.Location = new System.Drawing.Point(1240, 212);
             this.lbTapSpd.Name = "lbTapSpd";
             this.lbTapSpd.Size = new System.Drawing.Size(49, 12);
             this.lbTapSpd.TabIndex = 21;
@@ -280,7 +284,7 @@
             // lbXdLoc
             // 
             this.lbXdLoc.AutoSize = true;
-            this.lbXdLoc.Location = new System.Drawing.Point(857, 212);
+            this.lbXdLoc.Location = new System.Drawing.Point(322, 258);
             this.lbXdLoc.Name = "lbXdLoc";
             this.lbXdLoc.Size = new System.Drawing.Size(41, 12);
             this.lbXdLoc.TabIndex = 22;
@@ -289,7 +293,7 @@
             // lbXdSpd
             // 
             this.lbXdSpd.AutoSize = true;
-            this.lbXdSpd.Location = new System.Drawing.Point(982, 213);
+            this.lbXdSpd.Location = new System.Drawing.Point(628, 258);
             this.lbXdSpd.Name = "lbXdSpd";
             this.lbXdSpd.Size = new System.Drawing.Size(42, 12);
             this.lbXdSpd.TabIndex = 23;
@@ -298,7 +302,7 @@
             // lbXdRepeat
             // 
             this.lbXdRepeat.AutoSize = true;
-            this.lbXdRepeat.Location = new System.Drawing.Point(1108, 212);
+            this.lbXdRepeat.Location = new System.Drawing.Point(934, 258);
             this.lbXdRepeat.Name = "lbXdRepeat";
             this.lbXdRepeat.Size = new System.Drawing.Size(59, 12);
             this.lbXdRepeat.TabIndex = 24;
@@ -307,7 +311,7 @@
             // lbKneadSpd
             // 
             this.lbKneadSpd.AutoSize = true;
-            this.lbKneadSpd.Location = new System.Drawing.Point(724, 212);
+            this.lbKneadSpd.Location = new System.Drawing.Point(12, 258);
             this.lbKneadSpd.Name = "lbKneadSpd";
             this.lbKneadSpd.Size = new System.Drawing.Size(63, 12);
             this.lbKneadSpd.TabIndex = 25;
@@ -316,7 +320,7 @@
             // lbInterWork
             // 
             this.lbInterWork.AutoSize = true;
-            this.lbInterWork.Location = new System.Drawing.Point(1239, 212);
+            this.lbInterWork.Location = new System.Drawing.Point(1242, 258);
             this.lbInterWork.Name = "lbInterWork";
             this.lbInterWork.Size = new System.Drawing.Size(56, 12);
             this.lbInterWork.TabIndex = 26;
@@ -324,7 +328,7 @@
             // 
             // btPower
             // 
-            this.btPower.Location = new System.Drawing.Point(26, 90);
+            this.btPower.Location = new System.Drawing.Point(12, 90);
             this.btPower.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btPower.Name = "btPower";
             this.btPower.Size = new System.Drawing.Size(121, 23);
@@ -335,7 +339,7 @@
             // 
             // btBodyScan
             // 
-            this.btBodyScan.Location = new System.Drawing.Point(153, 90);
+            this.btBodyScan.Location = new System.Drawing.Point(139, 90);
             this.btBodyScan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btBodyScan.Name = "btBodyScan";
             this.btBodyScan.Size = new System.Drawing.Size(121, 23);
@@ -346,7 +350,7 @@
             // 
             // btWalkUp
             // 
-            this.btWalkUp.Location = new System.Drawing.Point(26, 117);
+            this.btWalkUp.Location = new System.Drawing.Point(12, 117);
             this.btWalkUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btWalkUp.Name = "btWalkUp";
             this.btWalkUp.Size = new System.Drawing.Size(121, 23);
@@ -357,7 +361,7 @@
             // 
             // btWalkDown
             // 
-            this.btWalkDown.Location = new System.Drawing.Point(153, 117);
+            this.btWalkDown.Location = new System.Drawing.Point(139, 117);
             this.btWalkDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btWalkDown.Name = "btWalkDown";
             this.btWalkDown.Size = new System.Drawing.Size(121, 23);
@@ -368,7 +372,7 @@
             // 
             // btKneadRun
             // 
-            this.btKneadRun.Location = new System.Drawing.Point(26, 144);
+            this.btKneadRun.Location = new System.Drawing.Point(12, 144);
             this.btKneadRun.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btKneadRun.Name = "btKneadRun";
             this.btKneadRun.Size = new System.Drawing.Size(121, 23);
@@ -379,7 +383,7 @@
             // 
             // btWalkHold
             // 
-            this.btWalkHold.Location = new System.Drawing.Point(280, 117);
+            this.btWalkHold.Location = new System.Drawing.Point(266, 117);
             this.btWalkHold.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btWalkHold.Name = "btWalkHold";
             this.btWalkHold.Size = new System.Drawing.Size(121, 23);
@@ -390,7 +394,7 @@
             // 
             // btKneadStop
             // 
-            this.btKneadStop.Location = new System.Drawing.Point(153, 144);
+            this.btKneadStop.Location = new System.Drawing.Point(139, 144);
             this.btKneadStop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btKneadStop.Name = "btKneadStop";
             this.btKneadStop.Size = new System.Drawing.Size(121, 23);
@@ -401,7 +405,7 @@
             // 
             // btMainAir
             // 
-            this.btMainAir.Location = new System.Drawing.Point(534, 90);
+            this.btMainAir.Location = new System.Drawing.Point(520, 90);
             this.btMainAir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btMainAir.Name = "btMainAir";
             this.btMainAir.Size = new System.Drawing.Size(121, 23);
@@ -412,7 +416,7 @@
             // 
             // btLegAir
             // 
-            this.btLegAir.Location = new System.Drawing.Point(534, 117);
+            this.btLegAir.Location = new System.Drawing.Point(520, 117);
             this.btLegAir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btLegAir.Name = "btLegAir";
             this.btLegAir.Size = new System.Drawing.Size(121, 23);
@@ -423,24 +427,28 @@
             // 
             // tbMainAir
             // 
-            this.tbMainAir.Location = new System.Drawing.Point(661, 90);
+            this.tbMainAir.Location = new System.Drawing.Point(647, 90);
             this.tbMainAir.Name = "tbMainAir";
             this.tbMainAir.Size = new System.Drawing.Size(100, 21);
             this.tbMainAir.TabIndex = 36;
             // 
             // tbLegAir
             // 
-            this.tbLegAir.Location = new System.Drawing.Point(661, 117);
+            this.tbLegAir.Location = new System.Drawing.Point(647, 117);
             this.tbLegAir.Name = "tbLegAir";
             this.tbLegAir.Size = new System.Drawing.Size(100, 21);
             this.tbLegAir.TabIndex = 37;
+            // 
+            // masageFileOpen
+            // 
+            this.masageFileOpen.FileName = "openFileDialog1";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1383, 846);
+            this.ClientSize = new System.Drawing.Size(1457, 846);
             this.Controls.Add(this.tbLegAir);
             this.Controls.Add(this.tbMainAir);
             this.Controls.Add(this.btLegAir);
@@ -529,5 +537,6 @@
         private System.Windows.Forms.Button btLegAir;
         private System.Windows.Forms.TextBox tbMainAir;
         private System.Windows.Forms.TextBox tbLegAir;
+        private System.Windows.Forms.OpenFileDialog masageFileOpen;
     }
 }
